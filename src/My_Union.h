@@ -19,6 +19,8 @@ struct Recursive_Union {
         }
     }
 
+    Recursive_Union() = default;
+
     template<typename U>
     Recursive_Union& operator=(U val) {
         if constexpr(std::is_same_v<U, T>) {
@@ -26,7 +28,8 @@ struct Recursive_Union {
             return *this;
         }
         else {
-            return (tail_vals = val);
+            tail_vals = val;
+            return *this;
         }
     }
 
@@ -47,8 +50,10 @@ struct Recursive_Union<T> {
 
     template<typename U>
     Recursive_Union(U val) {
-        head_val(val);
+        head_val = val;
     }
+
+    Recursive_Union() = default;
 
     template<typename U>
     U& get() {
