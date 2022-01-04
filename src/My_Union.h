@@ -3,10 +3,10 @@
 #include <type_traits>
 
 template<typename T, typename...Ts>
-struct Recursive_Union {
+struct My_Union {
     union {
         T head_val;
-        Recursive_Union<Ts...> tail_vals;
+        My_Union<Ts...> tail_vals;
     };
 
     template<typename U>
@@ -19,10 +19,10 @@ struct Recursive_Union {
         }
     }
 
-    Recursive_Union() = default;
+    My_Union() = default;
 
     template<typename U>
-    Recursive_Union& operator=(U val) {
+    My_Union& operator=(U val) {
         if constexpr(std::is_same_v<U, T>) {
             head_val = val;
             return *this;
@@ -34,7 +34,7 @@ struct Recursive_Union {
     }
 
     template<typename U>
-    Recursive_Union(U val) {
+    My_Union(U val) {
         if constexpr(std::is_same_v<U, T>) {
             head_val = val;
         }
@@ -45,15 +45,15 @@ struct Recursive_Union {
 };
 
 template<typename T>
-struct Recursive_Union<T> {
+struct My_Union<T> {
     T head_val;
 
     template<typename U>
-    Recursive_Union(U val) {
+    My_Union(U val) {
         head_val = val;
     }
 
-    Recursive_Union() = default;
+    My_Union() = default;
 
     template<typename U>
     U& get() {
