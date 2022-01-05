@@ -1,5 +1,5 @@
-.idea
-.vs
-cmake-build-debug
-out
-src
+.idea/
+.vs/
+cmake-build-debug/
+out/
+CMakeSettings.json
