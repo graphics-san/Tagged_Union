@@ -3,7 +3,7 @@
 #include <cstddef>
 #include <cstdint>
 
-namespace impl{
+namespace {
     template<uint64_t max_size, bool is_signed = false>
     auto Choose_Integer_Type_From_Size_func() {
 
@@ -38,6 +38,6 @@ namespace impl{
     }
 }
 
-//
+// evaluates to the smallest possible integer type that can contain the value max_size
 template<uint64_t max_size, bool is_signed = false>
-using Choose_Integer_Type_From_Size = decltype(impl::Choose_Integer_Type_From_Size_func<max_size, is_signed>());
+using Choose_Integer_Type_From_Size = decltype(Choose_Integer_Type_From_Size_func<max_size, is_signed>());

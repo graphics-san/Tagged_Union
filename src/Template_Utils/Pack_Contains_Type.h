@@ -1,6 +1,6 @@
 #include<type_traits>
 
-namespace {
+namespace impl{
     template<typename T, typename first_t, typename...rest_ts>
     struct pack_contains_type_t {
         static constexpr bool value = pack_contains_type_t<T, rest_ts...>::value;
@@ -23,4 +23,4 @@ namespace {
 }
 
 template<typename T, typename...Ts>
-constexpr bool pack_contains_type_v = pack_contains_type_t<T, Ts...>::value;
+constexpr bool pack_contains_type_v = impl::pack_contains_type_t<T, Ts...>::value;

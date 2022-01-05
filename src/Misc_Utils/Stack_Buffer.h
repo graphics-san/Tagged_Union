@@ -2,7 +2,6 @@
 
 #include <cstddef>
 
-
 template<std::size_t bytes>
 class Stack_Buffer {
     char head_val;
