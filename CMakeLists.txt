@@ -3,4 +3,4 @@ project(src/Tagged_Union)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(Tagged_Union src/Profiling.cpp src/Template_Utils/Get_Type_Location_In_Pack.h src/Tagged_Union/Tagged_Union.h src/Examples/Foo_Bar_Baz.h src/Tagged_Union/Dependencies/My_Union.h src/Template_Utils/Choose_Integer_Type_From_Size.h src/Examples/Virtual_Inheritance_Classes.h src/Template_Utils/Get_Type_From_Index.h src/Tagged_Union/Dependencies/Jump_Table_Array.h src/Misc_Utils/Progress_Bar.h src/Misc_Utils/Stack_Buffer.h src/Examples/Visitors.h)
+add_executable(Tagged_Union src/Profiling.cpp src/Template_Utils/Get_Type_Location_In_Pack.h src/Tagged_Union/Tagged_Union.h src/Examples/Foo_Bar_Baz.h src/Tagged_Union/Dependencies/My_Union.h src/Template_Utils/Choose_Integer_Type_From_Size.h src/Examples/Virtual_Inheritance_Classes.h src/Template_Utils/Get_Type_From_Index.h src/Tagged_Union/Dependencies/Jump_Table_Array.h src/Misc_Utils/Progress_Bar.h src/Misc_Utils/Stack_Buffer.h src/Examples/Visitors.h src/Template_Utils/Constexpr_Ternary.h)
