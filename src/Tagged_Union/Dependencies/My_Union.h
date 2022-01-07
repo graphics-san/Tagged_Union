@@ -9,6 +9,8 @@ struct My_Union {
         My_Union<Ts...> tail_vals;
     };
 
+    My_Union() = default;
+
     template<typename U>
     U& get() {
         if constexpr(std::is_same_v<U, T>) {
@@ -19,7 +21,6 @@ struct My_Union {
         }
     }
 
-    My_Union() = default;
 
     template<typename U>
     My_Union& operator=(U val) {

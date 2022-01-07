@@ -14,15 +14,24 @@
 #include "Examples/Visitors.h"
 
 
-TAGGED_UNION_ENABLE_MEMBER_FUNC(do_stuff)
-TAGGED_UNION_ENABLE_MEMBER_FUNC(work)
-TAGGED_UNION_ENABLE_MEMBER_FUNC(sleep)
+TAGGED_UNION_ENABLE_MEMBER(do_stuff)
+TAGGED_UNION_ENABLE_MEMBER(work)
+TAGGED_UNION_ENABLE_MEMBER(sleep)
+TAGGED_UNION_ENABLE_MEMBER(i)
 
 
 int main() {
 
 #define ARRAY_SIZE 10000
 #define NUMBER_OF_RUNS 1000
+
+    Foo f {1, 3};
+    Bar b {2, 5};
+
+    Tagged_Union<Foo, Bar, Baz> tu = b;
+    std::cout << tu.get_member_var<i>();
+
+    std::exit(-1);
 
     double if_vec_total = 0, uvec_total = 0, vvec_total = 0, stdvec_total = 0;
 

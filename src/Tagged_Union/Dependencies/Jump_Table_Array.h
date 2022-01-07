@@ -6,8 +6,8 @@
 #include "Template_Utils/Constexpr_Ternary.h"
 
 enum Jump_Table_Mode {
-    MEMBER_FUNCTION,
-    MEMBER_VARIABLE
+    MEMBER_FUNCTION = 100,
+    MEMBER_VARIABLE = 2
 };
 
 /*This class is for Tagged_Union's member jump table.
@@ -20,17 +20,21 @@ protected:
     // returns the correct tagged union func (get_member_var or get_member_func) based on mode
 
     template<std::size_t index>
-    static constexpr auto tagged_union_func =
-            constexpr_ternary_value_v<(mode == MEMBER_FUNCTION), // both are being evaluated, somehow
+    static constexpr auto tagged_union_func = []{
+        if constexpr(mode == MEMBER_FUNCTION) {
+            return &Tagged_Union_T::template execute_func_from_index_internal<Func_Wrapper, index, Arg_Ts...>;
+            }
+        else {
+                return &Tagged_Union_T::template get_member_var_from_index_internal<Func_Wrapper, index>;
+            }
+    }();
+            /*constexpr_ternary_value_v<(true), // both are being evaluated, somehow
                 &Tagged_Union_T::template execute_func_from_index_internal<Func_Wrapper, index, Arg_Ts...>,
-                    &Tagged_Union_T::template get_member_var_from_index_internal<Func_Wrapper, index>>; // <- This is being incorrectly chosen
+                    &Tagged_Union_T::template get_member_var_from_index_internal<Func_Wrapper, index>>;*/ // <- This is being incorrectly chosen
 
     //static constexpr auto tagged_union_func = &Tagged_Union_T::template execute_func_from_index_internal<Func_Wrapper, index, Arg_Ts...>;
 
     using T = decltype(tagged_union_func<0>);
-    static_assert(mode==MEMBER_FUNCTION);
-
-    static_assert(tagged_union_func<4>  == &Tagged_Union_T::template execute_func_from_index_internal<Func_Wrapper, 4, Arg_Ts...>);
 
 };
 
@@ -44,6 +48,7 @@ class Jump_Table_Array : Jump_Table_Array_Base<Tagged_Union_T, Func_Wrapper, mod
     using tagged_union_func = typename Jump_Table_Array_Base_t::template tagged_union_func<index>;*/
 
     using T = typename Jump_Table_Array_Base_t ::T;
+
 
     T head_val;
     Jump_Table_Array<Tagged_Union_T, Func_Wrapper, N - 1, I + 1, mode, Arg_Ts...> tail_vals;
@@ -65,7 +70,6 @@ class Jump_Table_Array<Tagged_Union_T, Func_Wrapper, 1, I, mode, Arg_Ts...> : Ju
     using Jump_Table_Array_Base_t = Jump_Table_Array_Base<Tagged_Union_T, Func_Wrapper, mode, Arg_Ts...>;
 
 
-    static_assert(mode==MEMBER_FUNCTION);
 
 
 public:

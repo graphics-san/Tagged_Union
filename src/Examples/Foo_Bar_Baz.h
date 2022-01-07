@@ -36,6 +36,8 @@ struct Foo {
     }
 
     unsigned int x;
+
+    int i;
 };
 
 struct Bar {
@@ -55,6 +57,9 @@ struct Bar {
     std::string concat(std::string a, std::string b) {
         return "I am bar " + a + b + ' ' + std::to_string(x);
     }
+
+    int i;
+
 };
 
 struct Baz {
@@ -70,6 +75,7 @@ struct Baz {
         std::this_thread::sleep_for(x*time*3ns);
     }
     long x;
+    int i;
 
 };
 
@@ -86,6 +92,7 @@ struct Um {
         std::this_thread::sleep_for(x*time*4ns);
     }
     unsigned short x;
+    int i;
 
 };
 
@@ -103,6 +110,7 @@ struct Uhh {
     }
     unsigned char x;
     //Stack_Buffer<30> needlessly_big_member;
+    int i;
 
 
 };

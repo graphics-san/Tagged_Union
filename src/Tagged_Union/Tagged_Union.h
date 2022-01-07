@@ -10,9 +10,9 @@
 #include "Dependencies/Jump_Table_Array.h"
 #include "../Template_Utils/Pack_Contains_Type.h"
 
-#define TAGGED_UNION_ENABLE_MEMBER_FUNC(FUNC_NAME) struct FUNC_NAME { \
+#define TAGGED_UNION_ENABLE_MEMBER(MEMBER_NAME) struct MEMBER_NAME { \
         template<typename T> \
-        static constexpr auto m_func = &T::FUNC_NAME; \
+        static constexpr auto m_func = &T::MEMBER_NAME; \
     };
 
 // this is probably unnecessary, since the syntax for obtaining a pointer to a member function is the same as obtaining one to a member variable
@@ -36,13 +36,14 @@ private:
     template<typename func_wrapper, typename...Arg_Ts>
     static constexpr auto member_function_jump_table = Jump_Table_Array<Tagged_Union, func_wrapper, sizeof...(Ts), 0, MEMBER_FUNCTION, Arg_Ts...>();
 
-    /*template<typename var_wrapper> // TODO: implement. Will require changes to Jump_Table_Array
+    template<typename var_wrapper>
     static constexpr auto member_variable_jump_table = Jump_Table_Array<Tagged_Union, var_wrapper, sizeof...(Ts), 0, MEMBER_VARIABLE>(); // Note, omitted Arg_Ts...*/
 
 
     uint_type tag;
     My_Union<Ts...> m_union;
-
+    
+public:
     template<typename func_wrapper, uint_type index, typename...Arg_Ts>
     auto execute_func_from_index_internal(Arg_Ts...args) {
         using U = Get_Type_From_Index<index, Ts...>;
@@ -74,7 +75,7 @@ public:
 
     template<typename var>
     auto get_member_var() {
-        //TODO
+        return (this->*(member_variable_jump_table<var>[tag]))();
     }
 
     template<typename func_wrapper, typename...Arg_Ts> // TODO: make this the default. Consider adding conditional compilation to control whether ifs/jump table is used
