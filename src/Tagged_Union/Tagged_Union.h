@@ -10,15 +10,10 @@
 #include "Dependencies/Jump_Table_Array.h"
 #include "../Template_Utils/Pack_Contains_Type.h"
 
+// Enables usage of a member variable or function called MEMBER_NAME. Enables the use of a member MEMBER_NAME of any class
 #define TAGGED_UNION_ENABLE_MEMBER(MEMBER_NAME) struct MEMBER_NAME { \
         template<typename T> \
         static constexpr auto m_func = &T::MEMBER_NAME; \
-    };
-
-// this is probably unnecessary, since the syntax for obtaining a pointer to a member function is the same as obtaining one to a member variable
-#define TAGGED_UNION_ENABLE_MEMBER_VAR(VAR_NAME) struct VAR_NAME { \
-        template<typename T> \
-        static constexpr auto m_var = &T::VAR_NAME; \
     };
 
 template<typename...Ts>
@@ -42,7 +37,7 @@ private:
 
     uint_type tag;
     My_Union<Ts...> m_union;
-    
+
 public:
     template<typename func_wrapper, uint_type index, typename...Arg_Ts>
     auto execute_func_from_index_internal(Arg_Ts...args) {
@@ -69,7 +64,7 @@ public:
 
 public:
     template<typename func, typename...Arg_Ts>
-    auto execute_func(Arg_Ts...args) { // Todo: enable pass by reference
+    auto execute_func(Arg_Ts&&...args) { // Todo: enable pass by reference
         return execute_func_internal<func, 0, Ts...>(args...);
     }
 
@@ -79,7 +74,7 @@ public:
     }
 
     template<typename func_wrapper, typename...Arg_Ts> // TODO: make this the default. Consider adding conditional compilation to control whether ifs/jump table is used
-    auto execute_func_jump_table(Arg_Ts...args) {
+    auto execute_func_jump_table(Arg_Ts&&...args) {
         return (this->*(member_function_jump_table<func_wrapper, Arg_Ts...>[tag]))(args...);
     }
 

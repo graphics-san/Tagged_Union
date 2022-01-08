@@ -44,9 +44,6 @@ class Jump_Table_Array : Jump_Table_Array_Base<Tagged_Union_T, Func_Wrapper, mod
 
     using Jump_Table_Array_Base_t = Jump_Table_Array_Base<Tagged_Union_T, Func_Wrapper, mode, Arg_Ts...>;
 
-    /*template<std::size_t index>
-    using tagged_union_func = typename Jump_Table_Array_Base_t::template tagged_union_func<index>;*/
-
     using T = typename Jump_Table_Array_Base_t ::T;
 
 

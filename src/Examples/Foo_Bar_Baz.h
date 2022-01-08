@@ -15,7 +15,12 @@
                         using namespace std::chrono_literals;\
                         std::this_thread::sleep_for(x*time*UNIQUE_VALUE*1ns);\
                     }                                                            \
-                    MEMBER_VARIABLE_TYPE x;                                                             \
+                    MEMBER_VARIABLE_TYPE x;                                      \
+                                                                                 \
+                    void assign(int& i) {                                        \
+                        i=1;\
+                    }                                                             \
+                    \
 };
 
 struct Foo {
@@ -114,4 +119,8 @@ struct Uhh {
 
 
 };
+
+GENERATE_STRUCT(A, int, 1)
+GENERATE_STRUCT(B, int, 1)
+GENERATE_STRUCT(C, int, 1)
 

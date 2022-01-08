@@ -18,6 +18,7 @@ TAGGED_UNION_ENABLE_MEMBER(do_stuff)
 TAGGED_UNION_ENABLE_MEMBER(work)
 TAGGED_UNION_ENABLE_MEMBER(sleep)
 TAGGED_UNION_ENABLE_MEMBER(i)
+TAGGED_UNION_ENABLE_MEMBER(assign)
 
 
 int main() {
@@ -25,13 +26,15 @@ int main() {
 #define ARRAY_SIZE 10000
 #define NUMBER_OF_RUNS 1000
 
-    Foo f {1, 3};
-    Bar b {2, 5};
+    /*A a {1};
+    B b {2};
 
-    Tagged_Union<Foo, Bar, Baz> tu = b;
-    std::cout << tu.get_member_var<i>();
+    Tagged_Union<A, B, C> tu = a;
+    int x = 5;
+    tu.execute_func_jump_table<assign>(x);
+    std::cout << "x: " << x;
 
-    std::exit(-1);
+    std::exit(-1);*/
 
     double if_vec_total = 0, uvec_total = 0, vvec_total = 0, stdvec_total = 0;
 
