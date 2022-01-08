@@ -41,7 +41,6 @@ class Jump_Table_Array : Jump_Table_Array_Base<Tagged_Union_T, Func_Wrapper, mod
     T head_val;
     Jump_Table_Array<Tagged_Union_T, Func_Wrapper, N - 1, I + 1, mode, Arg_Ts...> tail_vals;
 
-
 public:
 
     constexpr T& operator[](std::size_t index) const{

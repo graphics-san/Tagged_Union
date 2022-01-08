@@ -131,8 +131,8 @@ int main() {
 
     std::cout << "\n\n----RESULTS-----\n\n";
     std::cout << "virtual inheritance duration: " << vvec_total << " seconds,\n";
-    std::cout << "my tagged union duration (jump table): " << uvec_total << " seconds\n";
-    std::cout << "my tagged union duration (if statements): " << if_vec_total << " seconds\n";
+    std::cout << "tagged_union duration (jump table): " << uvec_total << " seconds\n";
+    std::cout << "tagged_union duration (if statements): " << if_vec_total << " seconds\n";
     std::cout << "std::variant duration: " << stdvec_total << " seconds\n\n";
 
     std::cout << "press enter to exit";
