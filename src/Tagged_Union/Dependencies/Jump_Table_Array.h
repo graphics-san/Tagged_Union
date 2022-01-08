@@ -3,22 +3,20 @@
 #include<cstddef>
 #include<iostream>
 
-#include "Template_Utils/Constexpr_Ternary.h"
-
 enum Jump_Table_Mode {
-    MEMBER_FUNCTION = 100,
-    MEMBER_VARIABLE = 2
+    MEMBER_FUNCTION,
+    MEMBER_VARIABLE
 };
 
-/*This class is for Tagged_Union's member jump table.
+/*This class is for Tagged_Union's member jump tables.
  It's defined recursively because it needs to be programmatically initialized at compile time.
  */
 
 template<typename Tagged_Union_T, typename Func_Wrapper, Jump_Table_Mode mode, typename...Arg_Ts>
 class Jump_Table_Array_Base {
 protected:
-    // returns the correct tagged union func (get_member_var or get_member_func) based on mode
 
+    // returns the correct tagged union func (get_member_var or get_member_func) based on mode
     template<std::size_t index>
     static constexpr auto tagged_union_func = []{
         if constexpr(mode == MEMBER_FUNCTION) {
@@ -27,17 +25,10 @@ protected:
         else {
                 return &Tagged_Union_T::template get_member_var_from_index_internal<Func_Wrapper, index>;
             }
-    }();
-            /*constexpr_ternary_value_v<(true), // both are being evaluated, somehow
-                &Tagged_Union_T::template execute_func_from_index_internal<Func_Wrapper, index, Arg_Ts...>,
-                    &Tagged_Union_T::template get_member_var_from_index_internal<Func_Wrapper, index>>;*/ // <- This is being incorrectly chosen
+        }();
 
-    //static constexpr auto tagged_union_func = &Tagged_Union_T::template execute_func_from_index_internal<Func_Wrapper, index, Arg_Ts...>;
-
-    using T = decltype(tagged_union_func<0>);
-
+    using T = decltype(tagged_union_func<0>); // all functions will have the same type, so any of them will work here
 };
-
 
 template<typename Tagged_Union_T, typename Func_Wrapper, std::size_t N, std::size_t I, Jump_Table_Mode mode, typename...Arg_Ts>
 class Jump_Table_Array : Jump_Table_Array_Base<Tagged_Union_T, Func_Wrapper, mode, Arg_Ts...> {
@@ -52,8 +43,8 @@ class Jump_Table_Array : Jump_Table_Array_Base<Tagged_Union_T, Func_Wrapper, mod
 
 
 public:
-    //todo readd ref (T&)
-    constexpr T operator[](std::size_t index) const{
+
+    constexpr T& operator[](std::size_t index) const{
         return *((&head_val) + index);
     }
 

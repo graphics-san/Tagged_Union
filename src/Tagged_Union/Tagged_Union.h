@@ -10,21 +10,13 @@
 #include "Dependencies/Jump_Table_Array.h"
 #include "../Template_Utils/Pack_Contains_Type.h"
 
-// Enables usage of a member variable or function called MEMBER_NAME. Enables the use of a member MEMBER_NAME of any class
-#define TAGGED_UNION_ENABLE_MEMBER(MEMBER_NAME) struct MEMBER_NAME { \
-        template<typename T> \
-        static constexpr auto m_func = &T::MEMBER_NAME; \
-    };
-
 template<typename...Ts>
 class Tagged_Union {
-private:
-
-    template<typename T, typename U, std::size_t N,std::size_t I, Jump_Table_Mode mode,  typename...Arg_Ts>
-    friend class Jump_Table_Array;
+    template<typename Tagged_Union_T, typename Func_Wrapper, std::size_t N, std::size_t I, Jump_Table_Mode mode, typename...Arg_Ts>
+    friend class ::Jump_Table_Array; // Why aren't my friend declarations working?
 
     template<typename Tagged_Union_T, typename Func_Wrapper, Jump_Table_Mode mode, typename...Arg_Ts>
-    friend class Jump_Table_Array_Base;
+    friend class ::Jump_Table_Array_Base;
 
     using uint_type = Choose_Integer_Type_From_Size<sizeof...(Ts)>; // use the smallest possible uint type for tag
 
@@ -38,7 +30,7 @@ private:
     uint_type tag;
     My_Union<Ts...> m_union;
 
-public:
+public: // TODO: make this private again once I figure out why my friend declarations aren't working
     template<typename func_wrapper, uint_type index, typename...Arg_Ts>
     auto execute_func_from_index_internal(Arg_Ts...args) {
         using U = Get_Type_From_Index<index, Ts...>;
@@ -46,7 +38,7 @@ public:
     }
 
     template<typename var_wrapper, uint_type index>
-    auto get_member_var_from_index_internal() {
+    auto& get_member_var_from_index_internal() {
         using U = Get_Type_From_Index<index, Ts...>;
         return ((m_union.template get<U>()).*(var_wrapper::template m_func<U>));
     }
@@ -73,6 +65,12 @@ public:
         return (this->*(member_variable_jump_table<var>[tag]))();
     }
 
+    //returns a mutable reference to var
+    template<typename var>
+    auto& get_member_var_ref() {
+        return (this->*(member_variable_jump_table<var>[tag]))();
+    }
+
     template<typename func_wrapper, typename...Arg_Ts> // TODO: make this the default. Consider adding conditional compilation to control whether ifs/jump table is used
     auto execute_func_jump_table(Arg_Ts&&...args) {
         return (this->*(member_function_jump_table<func_wrapper, Arg_Ts...>[tag]))(args...);
@@ -87,3 +85,11 @@ public:
 
     Tagged_Union() = default;
 };
+
+// Enables usage of a member variable or function called MEMBER_NAME.
+#define TAGGED_UNION_ENABLE_MEMBER(MEMBER_NAME)                      \
+                                                                     \
+struct MEMBER_NAME {                                                 \
+        template<typename T>                                         \
+        static constexpr auto m_func = &T::MEMBER_NAME;              \
+    };

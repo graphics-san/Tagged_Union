@@ -23,16 +23,17 @@ TAGGED_UNION_ENABLE_MEMBER(assign)
 
 int main() {
 
-#define ARRAY_SIZE 10000
-#define NUMBER_OF_RUNS 1000
+#define ARRAY_SIZE 10000u
+#define NUMBER_OF_RUNS 1000u
 
-    /*A a {1};
-    B b {2};
+    /*Foo f = {1,2};
+    Bar b = {3,4};
 
-    Tagged_Union<A, B, C> tu = a;
-    int x = 5;
-    tu.execute_func_jump_table<assign>(x);
-    std::cout << "x: " << x;
+    Tagged_Union<Foo, Bar, Baz> tu = b;
+
+    std::cout << tu.get_member_var<i>() << '\n';
+    tu.get_member_var_ref<i>() = 7;
+    std::cout << tu.get_member_var<i>();
 
     std::exit(-1);*/
 
@@ -52,7 +53,7 @@ int main() {
 
     for(unsigned int run = 0; run < NUMBER_OF_RUNS; ++run) {
         std::cout << "\rRun #: " << run << "/" << NUMBER_OF_RUNS << " ";
-        print_progress_bar(run, (unsigned int)NUMBER_OF_RUNS, 25);
+        print_progress_bar(run, NUMBER_OF_RUNS, 25);
 
         for (unsigned int i = 0; i < ARRAY_SIZE; ++i) {
             switch (distribute(generator)) {
