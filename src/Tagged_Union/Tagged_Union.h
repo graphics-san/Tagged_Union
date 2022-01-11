@@ -9,6 +9,7 @@
 #include "../Template_Utils/Get_Type_From_Index.h"
 #include "Dependencies/Jump_Table_Array.h"
 #include "../Template_Utils/Pack_Contains_Type.h"
+#include "Dependencies/Bad_Tagged_Union_Access.h"
 
 template<typename...Ts>
 class Tagged_Union {
@@ -17,6 +18,8 @@ class Tagged_Union {
 
     template<typename Tagged_Union_T, typename Func_Wrapper, Jump_Table_Mode mode, typename...Arg_Ts>
     friend class ::Jump_Table_Array_Base;
+
+    friend class Bad_Tagged_Union_Access;
 
     using uint_type = Choose_Integer_Type_From_Size<sizeof...(Ts)>; // use the smallest possible uint type for tag
 
@@ -35,7 +38,7 @@ class Tagged_Union {
     My_Union<Ts...> m_union;
 
 public: // TODO: make this private again once I figure out why my friend declarations aren't working
-    template<typename func_wrapper, uint_type index, typename...Arg_Ts> // TODO rename to execute_member_func
+    template<typename func_wrapper, uint_type index, typename...Arg_Ts> // TODO rename to execute_member_func...
     auto execute_func_from_index_internal(Arg_Ts...args) { // TODO make this return auto&, in case function returns reference
         using U = Get_Type_From_Index<index, Ts...>;
         return ((m_union.template get<U>()).*(func_wrapper::template m_func<U>))(args...);
@@ -86,6 +89,7 @@ public:
         return (this->*(member_function_jump_table<func_wrapper, Arg_Ts...>[tag]))(args...);
     }
 
+    //expects a family of functions that have identical signatures except for their first parameter excepting a different type in Ts... .
     template<typename func_wrapper, typename...Arg_Ts>
     auto execute_free_func(Arg_Ts&&...args) {
         return (this->*(free_function_jump_table<func_wrapper, Arg_Ts...>[tag]))(args...);
@@ -96,6 +100,22 @@ public:
     Tagged_Union(T t) {
         tag = (uint_type)get_type_location_in_pack<T, Ts...>;
         m_union = t;
+    }
+
+    template<typename T>
+    requires pack_contains_type_v<T, Ts...>
+    T get() {
+        if(get_type_location_in_pack<T, Ts...> != tag) {
+            throw Bad_Tagged_Union_Access(*this);
+        }
+
+        return m_union.template get<T>();
+    }
+
+    template<typename T>
+    requires pack_contains_type_v<T, Ts...>
+    T unsafe_get() {
+        return m_union.template get<T>();
     }
 
     Tagged_Union() = default;

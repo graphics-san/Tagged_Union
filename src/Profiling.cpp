@@ -30,7 +30,7 @@ int main() {
 #define ARRAY_SIZE 10000u
 #define NUMBER_OF_RUNS 1000u
 
-    Foo f = {1,2};
+    /*Foo f = {1,2};
     Bar b = {3,4};
 
     Tagged_Union<Foo, Bar, Baz> tu = b;
@@ -40,7 +40,7 @@ int main() {
     std::cout << tu.get_member_var<i>();
 
 
-    std::exit(-1);
+    std::exit(-1);*/
 
     double if_vec_total = 0, uvec_total = 0, vvec_total = 0, stdvec_total = 0;
 
