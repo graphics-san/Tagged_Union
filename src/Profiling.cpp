@@ -12,13 +12,17 @@
 #include "Examples/Virtual_Inheritance_Classes.h"
 #include "Misc_Utils/Progress_Bar.h"
 #include "Examples/Visitors.h"
+#include "Examples/Free_Functions.h"
 
 
 TAGGED_UNION_ENABLE_MEMBER(do_stuff)
 TAGGED_UNION_ENABLE_MEMBER(work)
 TAGGED_UNION_ENABLE_MEMBER(sleep)
 TAGGED_UNION_ENABLE_MEMBER(i)
+//TAGGED_UNION_ENABLE_MEMBER(x)
 TAGGED_UNION_ENABLE_MEMBER(assign)
+
+TAGGED_UNION_ENABLE_FREE_FUNCTION(do_thing)
 
 
 int main() {
@@ -26,16 +30,17 @@ int main() {
 #define ARRAY_SIZE 10000u
 #define NUMBER_OF_RUNS 1000u
 
-    /*Foo f = {1,2};
+    Foo f = {1,2};
     Bar b = {3,4};
 
     Tagged_Union<Foo, Bar, Baz> tu = b;
 
-    std::cout << tu.get_member_var<i>() << '\n';
-    tu.get_member_var_ref<i>() = 7;
+    //std::cout << tu.get_member_var<x>();
+    tu.execute_free_func<do_thing_Wrapper_t>(1);
     std::cout << tu.get_member_var<i>();
 
-    std::exit(-1);*/
+
+    std::exit(-1);
 
     double if_vec_total = 0, uvec_total = 0, vvec_total = 0, stdvec_total = 0;
 

@@ -20,27 +20,37 @@ class Tagged_Union {
 
     using uint_type = Choose_Integer_Type_From_Size<sizeof...(Ts)>; // use the smallest possible uint type for tag
 
+
     template<typename func_wrapper, typename...Arg_Ts>
     static constexpr auto member_function_jump_table = Jump_Table_Array<Tagged_Union, func_wrapper, sizeof...(Ts), 0, MEMBER_FUNCTION, Arg_Ts...>();
 
     template<typename var_wrapper>
-    static constexpr auto member_variable_jump_table = Jump_Table_Array<Tagged_Union, var_wrapper, sizeof...(Ts), 0, MEMBER_VARIABLE>(); // Note, omitted Arg_Ts...*/
+    static constexpr auto member_variable_jump_table = Jump_Table_Array<Tagged_Union, var_wrapper, sizeof...(Ts), 0, MEMBER_VARIABLE>(); // Note: omitted Arg_Ts...*/
+
+    template<typename func_wrapper, typename...Arg_Ts>
+    static constexpr auto free_function_jump_table = Jump_Table_Array<Tagged_Union, func_wrapper, sizeof...(Ts), 0, FREE_FUNCTION, Arg_Ts...>();
 
 
     uint_type tag;
     My_Union<Ts...> m_union;
 
 public: // TODO: make this private again once I figure out why my friend declarations aren't working
-    template<typename func_wrapper, uint_type index, typename...Arg_Ts>
-    auto execute_func_from_index_internal(Arg_Ts...args) {
+    template<typename func_wrapper, uint_type index, typename...Arg_Ts> // TODO rename to execute_member_func
+    auto execute_func_from_index_internal(Arg_Ts...args) { // TODO make this return auto&, in case function returns reference
         using U = Get_Type_From_Index<index, Ts...>;
         return ((m_union.template get<U>()).*(func_wrapper::template m_func<U>))(args...);
     }
 
     template<typename var_wrapper, uint_type index>
-    auto& get_member_var_from_index_internal() {
+    auto& get_member_var_from_index_internal() { // How is this being called by execute_free_func???
         using U = Get_Type_From_Index<index, Ts...>;
         return ((m_union.template get<U>()).*(var_wrapper::template m_func<U>));
+    }
+
+    template<typename func_wrapper, uint_type index, typename...Arg_Ts>
+    auto execute_free_func_from_index_internal(Arg_Ts...args) {
+        using U = Get_Type_From_Index<index, Ts...>;
+        return func_wrapper::execute((m_union.template get<U>()), args...);
     }
 
     template<typename func, uint_type index, typename U, typename...Us, typename...Arg_Ts>
@@ -56,7 +66,7 @@ public: // TODO: make this private again once I figure out why my friend declara
 
 public:
     template<typename func, typename...Arg_Ts>
-    auto execute_func(Arg_Ts&&...args) { // Todo: enable pass by reference
+    auto execute_func(Arg_Ts&&...args) {
         return execute_func_internal<func, 0, Ts...>(args...);
     }
 
@@ -76,6 +86,11 @@ public:
         return (this->*(member_function_jump_table<func_wrapper, Arg_Ts...>[tag]))(args...);
     }
 
+    template<typename func_wrapper, typename...Arg_Ts>
+    auto execute_free_func(Arg_Ts&&...args) {
+        return (this->*(free_function_jump_table<func_wrapper, Arg_Ts...>[tag]))(args...);
+    }
+
     template<typename T>
     requires pack_contains_type_v<T, Ts...>
     Tagged_Union(T t) {
@@ -93,3 +108,14 @@ struct MEMBER_NAME {                                                 \
         template<typename T>                                         \
         static constexpr auto m_func = &T::MEMBER_NAME;              \
     };
+
+#define TAGGED_UNION_ENABLE_FREE_FUNCTION(FUNCTION_NAME)                            \
+                                                                                    \
+struct FUNCTION_NAME##_Wrapper_t {                                                  \
+        template<typename first_arg_t, typename...rest_arg_ts>                      \
+        static auto execute(first_arg_t&& first_arg, rest_arg_ts&&...rest_args) {   \
+            return FUNCTION_NAME(first_arg, rest_args...);                          \
+        }                                                                           \
+};
+
+// keep an eye on the && stuff above
