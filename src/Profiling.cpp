@@ -30,21 +30,29 @@ int main() {
 #define ARRAY_SIZE 10000u
 #define NUMBER_OF_RUNS 1000u
 
-    /*Foo f = {1,2};
+    Foo f = {1,2};
     Bar b = {3,4};
 
+    struct test {
+        void sleep(float i ) const {
+
+        }
+    };
+
     Tagged_Union<Foo, Bar, Baz> tu = b;
+
+    std::cout  << "assert: " << all_tagged_union_funcs_have_same_signature_v<sleep, Baz, Bar> << '\n';
 
     //std::cout << tu.get_member_var<x>();
     tu.execute_free_func<do_thing_Wrapper_t>(1);
     std::cout << tu.get_member_var<i>();
 
 
-    std::exit(-1);*/
+    std::exit(-1);
 
     double if_vec_total = 0, uvec_total = 0, vvec_total = 0, stdvec_total = 0;
 
-    std::array<Tagged_Union<Foo, Bar, Baz, Um, Uhh>, ARRAY_SIZE> uvec{};
+    std::array<Tagged_Union<Foo, Bar, Baz, Um, Uhh, test>, ARRAY_SIZE> uvec{};
     std::array<Virtual_Base_Struct*, ARRAY_SIZE> vvec{};
     std::array<std::variant<Foo, Bar, Baz, Um, Uhh>, ARRAY_SIZE> stdvec;
 

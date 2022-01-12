@@ -10,6 +10,7 @@
 #include "Dependencies/Jump_Table_Array.h"
 #include "../Template_Utils/Pack_Contains_Type.h"
 #include "Dependencies/Bad_Tagged_Union_Access.h"
+#include "../Template_Utils/All_Types_Have_Attribute.h"
 
 template<typename...Ts>
 class Tagged_Union {
@@ -45,7 +46,7 @@ public: // TODO: make this private again once I figure out why my friend declara
     }
 
     template<typename var_wrapper, uint_type index>
-    auto& get_member_var_from_index_internal() { // How is this being called by execute_free_func???
+    auto& get_member_var_from_index_internal() {
         using U = Get_Type_From_Index<index, Ts...>;
         return ((m_union.template get<U>()).*(var_wrapper::template m_func<U>));
     }
@@ -75,6 +76,7 @@ public:
 
     template<typename var>
     auto get_member_var() {
+        static_assert(all_tagged_union_member_vars_have_same_type<var, Ts...>, "Not all member variables of var are have the same type");
         return (this->*(member_variable_jump_table<var>[tag]))();
     }
 
@@ -86,6 +88,7 @@ public:
 
     template<typename func_wrapper, typename...Arg_Ts> // TODO: make this the default. Consider adding conditional compilation to control whether ifs/jump table is used
     auto execute_func_jump_table(Arg_Ts&&...args) {
+        static_assert(all_tagged_union_funcs_have_same_signature_v<func_wrapper, Ts...>, "Not all functions of func_wrapper have the same signature");
         return (this->*(member_function_jump_table<func_wrapper, Arg_Ts...>[tag]))(args...);
     }
 
@@ -96,25 +99,25 @@ public:
     }
 
     template<typename T>
-    requires pack_contains_type_v<T, Ts...>
     Tagged_Union(T t) {
+        static_assert(pack_contains_type_v<T, Ts...>, "Attemping to assign to union from type it doesn't contain");
         tag = (uint_type)get_type_location_in_pack<T, Ts...>;
         m_union = t;
     }
 
     template<typename T>
-    requires pack_contains_type_v<T, Ts...>
     T get() {
+        static_assert(pack_contains_type_v<T, Ts...>, "Union does not contain requested type");
         if(get_type_location_in_pack<T, Ts...> != tag) {
-            throw Bad_Tagged_Union_Access(*this);
+            throw Bad_Tagged_Union_Access(get_type_location_in_pack<T, Ts...>, tag);
         }
 
         return m_union.template get<T>();
     }
 
     template<typename T>
-    requires pack_contains_type_v<T, Ts...>
     T unsafe_get() {
+        static_assert(pack_contains_type_v<T, Ts...>, "Union does not contain requested type");
         return m_union.template get<T>();
     }
 

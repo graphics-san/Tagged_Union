@@ -10,6 +10,11 @@ struct member_functions_have_same_signature_helper <return_t(T::*)(arg_ts...), r
     static constexpr bool value = true;
 };
 
+template<class T, class U, typename return_t, typename...arg_ts>
+struct member_functions_have_same_signature_helper <return_t(T::*)(arg_ts...) const, return_t(U::*)(arg_ts...) const> {
+    static constexpr bool value = true;
+};
+
 template<auto V, auto W>
 constexpr bool member_functions_have_same_signature_v = member_functions_have_same_signature_helper<decltype(V), decltype(W)>::value;
 
