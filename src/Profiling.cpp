@@ -47,7 +47,7 @@ int main() {
     tu.execute_free_func<do_thing_Wrapper_t>(1);
     std::cout << tu.get_member_var<i>();
 
-    std::exit(-1);
+    //std::exit(-1);
 
     double if_vec_total = 0, uvec_total = 0, vvec_total = 0, stdvec_total = 0;
 
@@ -100,7 +100,7 @@ int main() {
 
         auto if_vec_start = high_resolution_clock::now(); //
         for (auto &u: uvec) {
-            u.execute_func<sleep>(1);
+            u.execute_member_func__if_statement_impl<sleep>(1);
 
         }
         auto if_vec_end = high_resolution_clock::now();
@@ -118,9 +118,9 @@ int main() {
 
         auto uvec_start = high_resolution_clock::now();
         for (auto &u: uvec) {
-            //m_union.execute_func<work>(3);
-            //m_union.execute_func_jump_table<do_stuff>("HI");
-            u.execute_func_jump_table<sleep>(1);
+            //m_union.execute_member_func__if_statement_impl<work>(3);
+            //m_union.execute_member_func<do_stuff>("HI");
+            u.execute_member_func<sleep>(1);
 
         }
         auto uvec_end = high_resolution_clock::now();

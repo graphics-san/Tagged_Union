@@ -3,7 +3,7 @@
 #include<chrono>
 #include<thread>
 
-#include "../Misc_Utils/Stack_Buffer.h"
+#include "../Misc_Utils/Sized_Struct.h"
 
 #define GENERATE_STRUCT(NAME, MEMBER_VARIABLE_TYPE, UNIQUE_VALUE) struct NAME  { \
                   void do_stuff(const char* says) {\
@@ -114,7 +114,7 @@ struct Uhh {
         std::this_thread::sleep_for(x*time*5ns);
     }
     unsigned char x;
-    //Stack_Buffer<30> needlessly_big_member;
+    //Sized_Struct<30> needlessly_big_member;
     int i;
 
 

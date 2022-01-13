@@ -19,7 +19,7 @@ constexpr bool all_types_have_attribute_v = all_types_have_attribute_func<attrib
 template<typename func_wrapper>
 struct tagged_union_funcs_have_same_signature {
             template<typename T, typename U>
-            static constexpr bool value = member_functions_have_same_signature_v<func_wrapper::template m_func<T>, func_wrapper::template m_func<U>>;
+            static constexpr bool value = member_functions_have_same_signature_v<func_wrapper::template member<T>, func_wrapper::template member<U>>;
 };
 
 template<typename func_wrapper, typename...Ts>
@@ -28,7 +28,7 @@ constexpr bool all_tagged_union_funcs_have_same_signature_v = all_types_have_att
 template<typename var_wrapper>
 struct tagged_union_member_vars_have_same_type {
     template<typename T, typename U>
-    static constexpr bool value = member_variables_have_same_type_v<decltype(var_wrapper::template m_func<T>), decltype(var_wrapper::template m_func<U>)>;
+    static constexpr bool value = member_variables_have_same_type_v<decltype(var_wrapper::template member<T>), decltype(var_wrapper::template member<U>)>;
 };
 
 template<typename var_wrapper, typename...Ts>

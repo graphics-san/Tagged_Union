@@ -4,7 +4,7 @@
 #include<thread>
 #include <chrono>
 
-#include "Misc_Utils/Stack_Buffer.h"
+#include "Misc_Utils/Sized_Struct.h"
 
 #define GENERATE_VIRTUAL_STRUCT(NAME, MEMBER_VARIABLE_TYPE, UNIQUE_VALUE) struct NAME  { \
                   void do_stuff(const char* says) override {\
@@ -121,7 +121,7 @@ struct virtual_Uhh : Virtual_Base_Struct  {
     }
 
     unsigned char x;
-    //Stack_Buffer<30> needlessly_big_member;
+    //Sized_Struct<30> needlessly_big_member;
 
     virtual_Uhh(unsigned char x) : x(x) {}
 };

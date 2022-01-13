@@ -40,59 +40,60 @@ class Tagged_Union {
 
 public: // TODO: make this private again once I figure out why my friend declarations aren't working
     template<typename func_wrapper, uint_type index, typename...Arg_Ts> // TODO rename to execute_member_func...
-    auto execute_func_from_index_internal(Arg_Ts...args) { // TODO make this return auto&, in case function returns reference
+    auto get_member_func_from_index_internal(Arg_Ts...args) { // TODO make this return auto&, in case function returns reference
         using U = Get_Type_From_Index<index, Ts...>;
-        return ((m_union.template get<U>()).*(func_wrapper::template m_func<U>))(args...);
+        return ((m_union.template get<U>()).*(func_wrapper::template member<U>))(args...);
     }
 
     template<typename var_wrapper, uint_type index>
     auto& get_member_var_from_index_internal() {
         using U = Get_Type_From_Index<index, Ts...>;
-        return ((m_union.template get<U>()).*(var_wrapper::template m_func<U>));
+        return ((m_union.template get<U>()).*(var_wrapper::template member<U>));
     }
 
     template<typename func_wrapper, uint_type index, typename...Arg_Ts>
-    auto execute_free_func_from_index_internal(Arg_Ts...args) {
+    auto get_free_func_from_index_internal(Arg_Ts...args) {
         using U = Get_Type_From_Index<index, Ts...>;
         return func_wrapper::execute((m_union.template get<U>()), args...);
     }
 
     template<typename func, uint_type index, typename U, typename...Us, typename...Arg_Ts>
-    void execute_func_internal(Arg_Ts...args) {
+    void execute_member_func__if_statement_impl_internal(Arg_Ts...args) {
         if(index == tag) {
-            ((m_union.template get<U>()).*(func::template m_func<U>))(args...);
+            ((m_union.template get<U>()).*(func::template member<U>))(args...);
             return;
         }
         if constexpr(sizeof...(Us) != 0) {
-            execute_func_internal<func, index+1, Us...>(args...);
+            execute_member_func__if_statement_impl_internal<func, index + 1, Us...>(args...);
         }
     }
 
 public:
     template<typename func, typename...Arg_Ts>
-    auto execute_func(Arg_Ts&&...args) {
-        return execute_func_internal<func, 0, Ts...>(args...);
+    auto execute_member_func__if_statement_impl(Arg_Ts&&...args) {
+        return execute_member_func__if_statement_impl_internal<func, 0, Ts...>(args...);
     }
 
-    template<typename var>
+    template<typename var_wrapper>
     auto get_member_var() {
-        static_assert(all_tagged_union_member_vars_have_same_type<var, Ts...>, "Not all member variables of var are have the same type");
-        return (this->*(member_variable_jump_table<var>[tag]))();
+        static_assert(all_tagged_union_member_vars_have_same_type<var_wrapper, Ts...>, "Not all member variables of var_wrapper have the same type");
+        return (this->*(member_variable_jump_table<var_wrapper>[tag]))();
     }
 
-    //returns a mutable reference to var
-    template<typename var>
+    //returns a mutable reference to var_wrapper
+    template<typename var_wrapper>
     auto& get_member_var_ref() {
-        return (this->*(member_variable_jump_table<var>[tag]))();
+        static_assert(all_tagged_union_member_vars_have_same_type<var_wrapper, Ts...>, "Not all member variables of var_wrapper have the same type");
+        return (this->*(member_variable_jump_table<var_wrapper>[tag]))();
     }
 
     template<typename func_wrapper, typename...Arg_Ts> // TODO: make this the default. Consider adding conditional compilation to control whether ifs/jump table is used
-    auto execute_func_jump_table(Arg_Ts&&...args) {
-        static_assert(all_tagged_union_funcs_have_same_signature_v<func_wrapper, Ts...>, "Not all functions of func_wrapper have the same signature");
+    auto execute_member_func(Arg_Ts&&...args) {
+        static_assert(all_tagged_union_funcs_have_same_signature_v<func_wrapper, Ts...>, "Not all functions of func_wrapper have the same signature"); // TODO: discard the const so that the user can use const and non const functions interchangeably??
         return (this->*(member_function_jump_table<func_wrapper, Arg_Ts...>[tag]))(args...);
     }
 
-    //expects a family of functions that have identical signatures except for their first parameter excepting a different type in Ts... .
+    //expects a family of functions that have identical signatures except for their first parameter, which must be a different type in Ts... .
     template<typename func_wrapper, typename...Arg_Ts>
     auto execute_free_func(Arg_Ts&&...args) {
         return (this->*(free_function_jump_table<func_wrapper, Arg_Ts...>[tag]))(args...);
@@ -129,7 +130,7 @@ public:
                                                                      \
 struct MEMBER_NAME {                                                 \
         template<typename T>                                         \
-        static constexpr auto m_func = &T::MEMBER_NAME;              \
+        static constexpr auto member = &T::MEMBER_NAME;              \
     };
 
 #define TAGGED_UNION_ENABLE_FREE_FUNCTION(FUNCTION_NAME)                            \

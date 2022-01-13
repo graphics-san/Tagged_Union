@@ -18,6 +18,17 @@ struct member_functions_have_same_signature_helper <return_t(T::*)(arg_ts...) co
 template<auto V, auto W>
 constexpr bool member_functions_have_same_signature_v = member_functions_have_same_signature_helper<decltype(V), decltype(W)>::value;
 
+
+template<typename T, typename U>
+struct member_functions_have_compatible_signature;
+
+template<class A, typename A_return_t, typename...A_arg_ts, class B, typename B_return_t, typename...B_arg_ts>
+struct member_functions_have_compatible_signature<A_return_t (A::*)(A_arg_ts...), B_return_t (B::*)(B_arg_ts...)> {
+    static constexpr bool value = sizeof...(A_arg_ts) == sizeof...(B_arg_ts) &&
+                                  std::is_convertible_v<A_return_t, B_return_t>; // todo
+
+};
+
 template<auto val1, auto val2, auto...vals>
 constexpr bool all_member_functions_have_same_signature_helper_func() {
     if constexpr(sizeof...(vals) == 0) {
@@ -38,7 +49,6 @@ template<class A, class B, typename T, typename V>
 struct member_variables_have_same_type<T A::*, V B::*> {
     static constexpr bool value = std::is_same_v<T,V>;
 };
-
 
 template<typename T, typename V>
 static constexpr bool member_variables_have_same_type_v = member_variables_have_same_type<std::remove_const_t<T>, std::remove_const_t<V>>::value;

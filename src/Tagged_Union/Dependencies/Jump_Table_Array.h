@@ -21,7 +21,7 @@ protected:
 
     template<std::size_t _index>
     struct helper_switch<MEMBER_FUNCTION, _index> {
-        static constexpr auto val = &Tagged_Union_T::template execute_func_from_index_internal<Func_Wrapper, _index, Arg_Ts...>;
+        static constexpr auto val = &Tagged_Union_T::template get_member_func_from_index_internal<Func_Wrapper, _index, Arg_Ts...>;
     };
     template<std::size_t _index>
     struct helper_switch<MEMBER_VARIABLE, _index> {
@@ -29,7 +29,7 @@ protected:
     };
     template<std::size_t _index>
     struct helper_switch<FREE_FUNCTION, _index> {
-        static constexpr auto val = &Tagged_Union_T::template execute_free_func_from_index_internal<Func_Wrapper, _index, Arg_Ts...>;
+        static constexpr auto val = &Tagged_Union_T::template get_free_func_from_index_internal<Func_Wrapper, _index, Arg_Ts...>;
 
     };
     
@@ -38,13 +38,13 @@ protected:
     template<std::size_t index>                                                     /// still don't understand why below didn't work
     static constexpr auto tagged_union_func = helper_switch<mode, index>::val; /*[]{
         if constexpr(mode == MEMBER_FUNCTION) {
-            return &Tagged_Union_T::template execute_func_from_index_internal<Func_Wrapper, index, Arg_Ts...>;
+            return &Tagged_Union_T::template get_member_func_from_index_internal<Func_Wrapper, index, Arg_Ts...>;
             }
         else if(mode == MEMBER_VARIABLE) {  // for some reason this branch is being taken when mode == FREE_FUNCTION. Compiles without issues when this case is omitted (don't know if it works though)
                 return &Tagged_Union_T::template get_member_var_from_index_internal<Func_Wrapper, index>;
             }
         else { //mode == FREE_FUNCTION
-            return &Tagged_Union_T::template execute_free_func_from_index_internal<Func_Wrapper, index, Arg_Ts...>;
+            return &Tagged_Union_T::template get_free_func_from_index_internal<Func_Wrapper, index, Arg_Ts...>;
         }
         }();*/
 
