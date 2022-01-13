@@ -30,3 +30,15 @@ constexpr bool all_member_functions_have_same_signature_helper_func() {
 
 template<auto...vals>
 constexpr bool all_member_functions_have_same_signature_v = all_member_functions_have_same_signature_helper_func<vals...>();
+
+template<typename T, typename V>
+struct member_variables_have_same_type;
+
+template<class A, class B, typename T, typename V>
+struct member_variables_have_same_type<T A::*, V B::*> {
+    static constexpr bool value = std::is_same_v<T,V>;
+};
+
+
+template<typename T, typename V>
+static constexpr bool member_variables_have_same_type_v = member_variables_have_same_type<std::remove_const_t<T>, std::remove_const_t<V>>::value;

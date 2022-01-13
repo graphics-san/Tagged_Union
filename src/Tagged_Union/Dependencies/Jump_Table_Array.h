@@ -9,7 +9,7 @@ enum Jump_Table_Mode {
     FREE_FUNCTION = 5,
 };
 
-/*This class is for Tagged_Union's jump tables (member functions, member variables, and free functions).
+/*This class is for Tagged_Union's jump tables (member functions, member variables, free functions).
  It's defined recursively because it needs to be programmatically initialized at compile time.
  */
 

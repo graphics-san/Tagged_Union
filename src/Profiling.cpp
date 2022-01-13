@@ -47,12 +47,11 @@ int main() {
     tu.execute_free_func<do_thing_Wrapper_t>(1);
     std::cout << tu.get_member_var<i>();
 
-
     std::exit(-1);
 
     double if_vec_total = 0, uvec_total = 0, vvec_total = 0, stdvec_total = 0;
 
-    std::array<Tagged_Union<Foo, Bar, Baz, Um, Uhh, test>, ARRAY_SIZE> uvec{};
+    std::array<Tagged_Union<Foo, Bar, Baz, Um, Uhh>, ARRAY_SIZE> uvec{};
     std::array<Virtual_Base_Struct*, ARRAY_SIZE> vvec{};
     std::array<std::variant<Foo, Bar, Baz, Um, Uhh>, ARRAY_SIZE> stdvec;
 
