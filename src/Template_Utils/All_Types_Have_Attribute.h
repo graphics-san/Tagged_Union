@@ -17,7 +17,7 @@ template<typename attribute_wrapper, typename...Ts>
 constexpr bool all_types_have_attribute_v = all_types_have_attribute_func<attribute_wrapper, Ts...>();
 
 template<typename func_wrapper>
-struct tagged_union_funcs_have_same_signature {
+struct tagged_union_funcs_have_same_signature { // TODO: definitely put all this stuff in its own file
             template<typename T, typename U>
             static constexpr bool value = member_functions_have_same_signature_v<func_wrapper::template member<T>, func_wrapper::template member<U>>;
 };

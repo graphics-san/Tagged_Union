@@ -42,7 +42,7 @@ constexpr bool all_member_functions_have_same_signature_helper_func() {
 template<auto...vals>
 constexpr bool all_member_functions_have_same_signature_v = all_member_functions_have_same_signature_helper_func<vals...>();
 
-template<typename T, typename V>
+template<typename T, typename V> // TODO: probably put this stuff in its own file
 struct member_variables_have_same_type;
 
 template<class A, class B, typename T, typename V>
