@@ -7,7 +7,7 @@ Much less code to achieve the same effect as `std::visit`
 ## Fast
 Beats virtual inheritance and `std::visit` in my tests
 ## Minimal hackery
-Only uses one relatively straightforward macro
+Only uses one family of relatively straightforward macros
 
 # Usage
 
@@ -53,4 +53,3 @@ supported, examples coming soon
 ## Public Member Variables
 supported, examples coming soon
 
-        
