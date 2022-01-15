@@ -2,9 +2,9 @@ name: CMake
 
 on:
   push:
-    branches: [ jump-table ]
+    branches: [ free-functions ]
   pull_request:
-    branches: [ jump-table ]
+    branches: [ free-functions ]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
