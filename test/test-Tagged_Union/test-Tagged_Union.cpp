@@ -12,6 +12,10 @@ public:
 
     Test_Class_1() = default;
 
+    void assign_to_arg(unsigned int& val) {
+        val = u;
+    }
+
     int do_thing(int val) const {
         return i * val;
     }
@@ -29,6 +33,10 @@ public:
 
     Test_Class_2() = default;
 
+    void assign_to_arg(unsigned int& val) {
+        val = 2*u;
+    }
+
     int do_thing(int val) const {
         return i * val * 2;
     }
@@ -44,6 +52,10 @@ public:
     Test_Class_3(int ival, unsigned int uval) : i (ival), u(uval) {}
 
     Test_Class_3() = default;
+
+    void assign_to_arg(unsigned int& val) {
+        val = 3*u;
+    }
 
     int do_thing(int val) const {
         return i * val * 3;
@@ -69,6 +81,24 @@ TEST_CASE("execute_member_func returns correct result") {
 
     tu = tc3;
     REQUIRE(tu.execute_member_func<do_thing>(1) == 9);
+}
+
+
+TAGGED_UNION_ENABLE_MEMBER(assign_to_arg)
+TEST_CASE("pass by reference works") {
+    unsigned int i;
+
+    tu = tc1;
+    tu.execute_member_func<assign_to_arg>(i);
+    REQUIRE(i == 10);
+
+    tu = tc2;
+    tu.execute_member_func<assign_to_arg>(i);
+    REQUIRE(i == 22);
+
+    tu = tc3;
+    tu.execute_member_func<assign_to_arg>(i);
+    REQUIRE(i == 36);
 }
 
 // TODO: Test passing by reference
