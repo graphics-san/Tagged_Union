@@ -1,7 +1,7 @@
 [![Build](https://github.com/graphics-san/Tagged_Union/actions/workflows/Build.yml/badge.svg)](https://github.com/graphics-san/Tagged_Union/actions/workflows/Build.yml)
 
 # Tagged Union
-This is a templated implementation of a tagged union written in C++20.
+This is a templated implementation of a tagged union ([wikipedia](https://en.wikipedia.org/wiki/Tagged_union)) written in C++20.
 
 # Features
 ## Concise
