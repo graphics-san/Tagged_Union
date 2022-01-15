@@ -1,4 +1,5 @@
-[![Build](https://github.com/graphics-san/Tagged_Union/actions/workflows/Build.yml/badge.svg)](https://github.com/graphics-san/Tagged_Union/actions/workflows/Build.yml)
+[![Build](https://github.com/graphics-san/Tagged_Union/actions/workflows/Build.yml/badge.svg)](https://github.com/graphics-san/Tagged_Union/actions/workflows/Build.yml) ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
+
 
 # Tagged Union
 This is a templated implementation of a tagged union ([wikipedia](https://en.wikipedia.org/wiki/Tagged_union)) written in C++20.
