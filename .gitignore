@@ -3,4 +3,5 @@
 cmake-build-debug/
 out/
 CMakeSettings.json
+Testing/
 

@@ -6,6 +6,8 @@
 
 #include "Misc_Utils/Sized_Struct.h"
 
+// TODO clean up this whole file
+
 #define GENERATE_VIRTUAL_STRUCT(NAME, MEMBER_VARIABLE_TYPE, UNIQUE_VALUE) struct NAME  { \
                   void do_stuff(const char* says) override {\
                     std::cout << "NAME says " << says;\
