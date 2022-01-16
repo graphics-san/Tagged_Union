@@ -17,4 +17,4 @@ namespace {
 }
 
 template<std::size_t desired_index, typename...Ts>
-using Get_Type_From_Index = decltype(get_type_from_index_func<desired_index, 0, Ts...>());
+using get_type_from_index = decltype(get_type_from_index_func<desired_index, 0, Ts...>());

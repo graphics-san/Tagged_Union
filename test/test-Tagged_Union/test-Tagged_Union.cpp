@@ -169,7 +169,6 @@ TEST_CASE("get returns correct type and value") {
     auto i = pod_tu.get<int>();
     REQUIRE(std::is_same_v<decltype(i), int>);
     REQUIRE(i == 3);
-
 }
 
 TEST_CASE("get throws when requesting a type that isn't active") {
@@ -184,5 +183,33 @@ TEST_CASE("get throws when requesting a type that isn't active") {
     }
 
     REQUIRE(has_thrown);
+}
 
+TEST_CASE("get from index returns correct type value") {
+    REQUIRE(std::is_same_v<int, decltype(pod_tu.get<0>())>);
+    REQUIRE(std::is_same_v<bool, decltype(pod_tu.get<1>())>);
+    REQUIRE(std::is_same_v<char, decltype(pod_tu.get<2>())>);
+
+    pod_tu = 1;
+    REQUIRE(pod_tu.get<0>() == 1);
+    pod_tu = false;
+    REQUIRE(pod_tu.get<1>() == false);
+    pod_tu = 'c';
+    REQUIRE(pod_tu.get<2>() == 'c');
+}
+
+TEST_CASE("get from index throws when requesting a type that isn't active") {
+    Tagged_Union<int, bool, char> tu1;
+
+    bool has_thrown = false;
+
+    tu1 = 1;
+    try {
+        tu1.get<1>();
+    }
+    catch (Bad_Tagged_Union_Access& e) {
+        has_thrown = true;
+    }
+
+    REQUIRE(has_thrown);
 }

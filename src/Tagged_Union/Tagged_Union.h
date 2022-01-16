@@ -41,19 +41,19 @@ class Tagged_Union {
 public: // TODO: make this private again once I figure out why my friend declarations aren't working
     template<typename func_wrapper, uint_type index, typename...Arg_Ts> // TODO rename to execute_member_func...
     auto get_member_func_from_index_internal(Arg_Ts...args) { // TODO make this return auto&, in case function returns reference
-        using U = Get_Type_From_Index<index, Ts...>;
+        using U = get_type_from_index<index, Ts...>;
         return ((m_union.template get<U>()).*(func_wrapper::template member<U>))(args...);
     }
 
     template<typename var_wrapper, uint_type index>
     auto& get_member_var_from_index_internal() {
-        using U = Get_Type_From_Index<index, Ts...>;
+        using U = get_type_from_index<index, Ts...>;
         return ((m_union.template get<U>()).*(var_wrapper::template member<U>));
     }
 
     template<typename func_wrapper, uint_type index, typename...Arg_Ts>
     auto get_free_func_from_index_internal(Arg_Ts...args) {
-        using U = Get_Type_From_Index<index, Ts...>;
+        using U = get_type_from_index<index, Ts...>;
         return func_wrapper::execute((m_union.template get<U>()), args...);
     }
 
@@ -87,7 +87,7 @@ public:
         return (this->*(member_variable_jump_table<var_wrapper>[tag]))();
     }
 
-    template<typename func_wrapper, typename...Arg_Ts> // TODO: make this the default. Consider adding conditional compilation to control whether ifs/jump table is used
+    template<typename func_wrapper, typename...Arg_Ts>
     auto execute_member_func(Arg_Ts&&...args) {
         static_assert(all_tagged_union_funcs_have_same_signature_v<func_wrapper, Ts...>, "Not all functions of func_wrapper have the same signature"); // TODO: discard the const so that the user can use const and non const functions interchangeably??
         return (this->*(member_function_jump_table<func_wrapper, Arg_Ts...>[tag]))(args...);
@@ -116,10 +116,26 @@ public:
         return m_union.template get<T>();
     }
 
+    template<std::size_t I>
+    auto get() {
+        static_assert(I < sizeof...(Ts), "Tagged union get index out of bounds");
+        if(I != tag) {
+            throw Bad_Tagged_Union_Access(I, tag);
+        }
+
+        return m_union.template get<I>();
+    }
+
     template<typename T>
     T unsafe_get() {
         static_assert(pack_contains_type_v<T, Ts...>, "Union does not contain requested type");
         return m_union.template get<T>();
+    }
+
+    template<std::size_t I>
+    auto unsafe_get() {
+        static_assert(I < sizeof...(Ts), "Tagged union get index out of bounds");
+        return m_union.template get<I>();
     }
 
     Tagged_Union() = default;
