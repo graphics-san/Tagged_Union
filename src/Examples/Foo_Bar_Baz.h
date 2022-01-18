@@ -33,7 +33,8 @@ struct Foo {
     }
     void sleep(int time) const {
         using namespace std::chrono_literals;
-        std::this_thread::sleep_for(x*time*1ns);
+        //std::this_thread::sleep_for(x*time*1ns);
+        for(volatile unsigned int index = 0; index < i; index = index+1) {}
     }
 
     std::string concat(std::string a, std::string b) {
@@ -56,7 +57,8 @@ struct Bar {
     }
     void sleep(int time) const {
         using namespace std::chrono_literals;
-        std::this_thread::sleep_for(x*time*2ns);
+        //std::this_thread::sleep_for(x*time*2ns);
+        for(volatile unsigned int index = 0; index < i*2; index = index+1) {}
     }
 
     std::string concat(std::string a, std::string b) {
@@ -77,7 +79,8 @@ struct Baz {
     }
     void sleep(int time) const {
         using namespace std::chrono_literals;
-        std::this_thread::sleep_for(x*time*3ns);
+        //std::this_thread::sleep_for(x*time*3ns);
+        for(volatile unsigned int index = 0; index < i*3; index = index+1) {}
     }
     long x;
     int i;
@@ -94,7 +97,8 @@ struct Um {
     }
     void sleep(int time) const {
         using namespace std::chrono_literals;
-        std::this_thread::sleep_for(x*time*4ns);
+        //std::this_thread::sleep_for(x*time*4ns);
+        for(volatile unsigned int index = 0; index < i*4; index = index+1) {}
     }
     unsigned short x;
     int i;
@@ -111,7 +115,8 @@ struct Uhh {
     }
     void sleep(int time) const {
         using namespace std::chrono_literals;
-        std::this_thread::sleep_for(x*time*5ns);
+        //std::this_thread::sleep_for(x*time*5ns);
+        for(volatile unsigned int index = 0; index < i*5; index = index+1) {}
     }
     unsigned char x;
     //Sized_Struct<30> needlessly_big_member;

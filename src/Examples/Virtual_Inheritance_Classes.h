@@ -41,7 +41,8 @@ struct virtual_Foo : Virtual_Base_Struct {
     }
     void sleep(int time) override {
         using namespace std::chrono_literals;
-        std::this_thread::sleep_for(x*time*1ns);
+        //std::this_thread::sleep_for(x*time*1ns);
+        for(volatile unsigned int index = 0; index < x; index = index+1) {}
     }
 
     virtual_Foo(unsigned int x) : x(x) {}
@@ -61,7 +62,8 @@ struct virtual_Bar : Virtual_Base_Struct {
     }
     void sleep(int time) override {
         using namespace std::chrono_literals;
-        std::this_thread::sleep_for(x*time*2ns);
+        //std::this_thread::sleep_for(x*time*2ns);
+        for(volatile unsigned int index = 0; index < x*2; index = index+1) {}
     }
     long long x;
 
@@ -80,7 +82,8 @@ struct virtual_Baz : Virtual_Base_Struct  {
     }
     void sleep(int time) override {
         using namespace std::chrono_literals;
-        std::this_thread::sleep_for(x*time*3ns);
+        //std::this_thread::sleep_for(x*time*3ns);
+        for(volatile unsigned int index = 0; index < x*3; index = index+1) {}
     }
     long x;
 
@@ -100,7 +103,8 @@ struct virtual_Um : Virtual_Base_Struct  {
     }
     void sleep(int time) override {
         using namespace std::chrono_literals;
-        std::this_thread::sleep_for(x*time*4ns);
+        //std::this_thread::sleep_for(x*time*4ns);
+        for(volatile unsigned int index = 0; index < x*4; index = index+1) {}
     }
     unsigned short x;
 
@@ -119,7 +123,8 @@ struct virtual_Uhh : Virtual_Base_Struct  {
     }
     void sleep(int time) override {
         using namespace std::chrono_literals;
-        std::this_thread::sleep_for(x*time*5ns );
+        //std::this_thread::sleep_for(x*time*5ns);
+        for(volatile unsigned int index = 0; index < x*5; index = index+1) {}
     }
 
     unsigned char x;

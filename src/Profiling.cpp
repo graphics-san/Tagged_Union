@@ -27,7 +27,7 @@ TAGGED_UNION_ENABLE_FREE_FUNCTION(do_thing)
 int main() {
 
 #define ARRAY_SIZE 10000u
-#define NUMBER_OF_RUNS 1000u
+#define NUMBER_OF_RUNS 2000u
 
     /*Foo f = {1,2};
     Bar b = {3,4};

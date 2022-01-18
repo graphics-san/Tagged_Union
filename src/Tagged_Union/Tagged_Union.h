@@ -58,7 +58,7 @@ public: // TODO: make this private again once I figure out why my friend declara
     }
 
     template<typename func, uint_type index, typename U, typename...Us, typename...Arg_Ts>
-    void execute_member_func__if_statement_impl_internal(Arg_Ts...args) {
+    void execute_member_func__if_statement_impl_internal(Arg_Ts&&...args) {
         if(index == tag) {
             ((m_union.template get<U>()).*(func::template member<U>))(args...);
             return;

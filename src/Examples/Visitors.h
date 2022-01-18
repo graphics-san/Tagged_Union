@@ -14,11 +14,11 @@ struct work_visitor {
 };
 
 struct sleep_visitor {
-    void operator()(Foo& x, int time)   { using namespace std::chrono_literals; std::this_thread::sleep_for(x.x*time*1ns); }
-    void operator()(Bar& x, int time)   { using namespace std::chrono_literals; std::this_thread::sleep_for(x.x*time*2ns); }
-    void operator()(Baz& x, int time)   { using namespace std::chrono_literals; std::this_thread::sleep_for(x.x*time*3ns); }
-    void operator()(Um& x, int time)   { using namespace std::chrono_literals; std::this_thread::sleep_for(x.x*time*4ns); }
-    void operator()(Uhh& x, int time)   { using namespace std::chrono_literals; std::this_thread::sleep_for(x.x*time*5ns); }
+    void operator()(Foo& x, int time)   { using namespace std::chrono_literals; /*std::this::sleep_for(x.x*time*1ns);*/ for(volatile unsigned int index = 0; index < x.x*1; index = index+1) {}}
+    void operator()(Bar& x, int time)   { using namespace std::chrono_literals; /*std::this::sleep_for(x.x*time*2ns);*/for(volatile unsigned int index = 0; index < x.x*2; index = index+1) {} }
+    void operator()(Baz& x, int time)   { using namespace std::chrono_literals; /*std::this::sleep_for(x.x*time*3ns);*/for(volatile unsigned int index = 0; index < x.x*3; index = index+1) {} }
+    void operator()(Um& x, int time)   { using namespace std::chrono_literals; /*std::this::sleep_for(x.x*time*4ns);*/for(volatile unsigned int index = 0; index < x.x*4; index = index+1) {} }
+    void operator()(Uhh& x, int time)   { using namespace std::chrono_literals; /*std::this::sleep_for(x.x*time*5ns);*/for(volatile unsigned int index = 0; index < x.x*5; index = index+1) {}}
 };
 
 struct print_visitor {
