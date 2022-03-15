@@ -17,7 +17,7 @@
 
 TAGGED_UNION_ENABLE_MEMBER(do_stuff)
 TAGGED_UNION_ENABLE_MEMBER(work)
-TAGGED_UNION_ENABLE_MEMBER(sleep)
+TAGGED_UNION_ENABLE_MEMBER(sleepy_sleep)
 TAGGED_UNION_ENABLE_MEMBER(i)
 TAGGED_UNION_ENABLE_MEMBER(assign)
 
@@ -29,23 +29,36 @@ int main() {
 #define ARRAY_SIZE 10000u
 #define NUMBER_OF_RUNS 2000u
 
-    /*Foo f = {1,2};
+    Foo f = {1,2};
     Bar b = {3,4};
 
     struct test {
         void sleep(float i ) const {}
     };
 
-    Tagged_Union<Foo, Bar, Baz> tu = b;
+    /*Tagged_Union<Foo, Bar, Baz> tu = b;
 
     //std::cout << tu.get_member_var<x>();
-    tu.execute_free_func<do_thing_Wrapper_t>(1);
+    tu.execute_free_func<Tagged_Union_Free_Functions::do_thing>(1);
     std::cout << tu.get_member_var<i>();
-    std::exit(-1);*/
+
+
+    Tagged_Union<Foo, Bar, Baz> tu(Foo{});
+
+    std::cout << tu.get_member_var<i>(); // prints 1
+
+    tu = Bar{};
+    tu.get_member_var_ref<i>() = 9;
+
+    std::cout << tu.get_member_var<i>(); // prints 9
+
+    std::exit(-1);
+*/
 
     double if_vec_total = 0, uvec_total = 0, vvec_total = 0, stdvec_total = 0;
 
     std::array<Tagged_Union<Foo, Bar, Baz, Um, Uhh>, ARRAY_SIZE> uvec{};
+
     std::array<Virtual_Base_Struct*, ARRAY_SIZE> vvec{};
     std::array<std::variant<Foo, Bar, Baz, Um, Uhh>, ARRAY_SIZE> stdvec;
 
@@ -58,8 +71,8 @@ int main() {
     std::uniform_int_distribution<unsigned int> distribute( 1, 5);
 
     for(unsigned int run = 0; run < NUMBER_OF_RUNS; ++run) {
-        std::cout << "\rRun #: " << run << "/" << NUMBER_OF_RUNS << " ";
-        print_progress_bar(run, NUMBER_OF_RUNS, 25);
+        std::cout << "\rRun #: " << run+1 << "/" << NUMBER_OF_RUNS << " ";
+        print_progress_bar(run+1, NUMBER_OF_RUNS, 25);
 
         for (unsigned int i = 0; i < ARRAY_SIZE; ++i) {
             switch (distribute(generator)) {
@@ -94,7 +107,7 @@ int main() {
 
         auto if_vec_start = high_resolution_clock::now(); //
         for (auto &u: uvec) {
-            u.execute_member_func__if_statement_impl<sleep>(1);
+            u.execute_member_func__if_statement_impl<sleepy_sleep>(1);
 
         }
         auto if_vec_end = high_resolution_clock::now();
@@ -114,7 +127,7 @@ int main() {
         for (auto &u: uvec) {
             //m_union.execute_member_func__if_statement_impl<work>(3);
             //m_union.execute_member_func<do_stuff>("HI");
-            u.execute_member_func<sleep>(1);
+            u.execute_member_func<sleepy_sleep>(1);
 
         }
         auto uvec_end = high_resolution_clock::now();

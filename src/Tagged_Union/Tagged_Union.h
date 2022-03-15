@@ -29,7 +29,7 @@ class Tagged_Union {
     static constexpr auto member_function_jump_table = Jump_Table_Array<Tagged_Union, func_wrapper, sizeof...(Ts), 0, MEMBER_FUNCTION, Arg_Ts...>();
 
     template<typename var_wrapper>
-    static constexpr auto member_variable_jump_table = Jump_Table_Array<Tagged_Union, var_wrapper, sizeof...(Ts), 0, MEMBER_VARIABLE>(); // Note: omitted Arg_Ts...*/
+    static constexpr auto member_variable_jump_table = Jump_Table_Array<Tagged_Union, var_wrapper, sizeof...(Ts), 0, MEMBER_VARIABLE>(); // Note: omitted Arg_Ts... because we dont' need them*/
 
     template<typename func_wrapper, typename...Arg_Ts>
     static constexpr auto free_function_jump_table = Jump_Table_Array<Tagged_Union, func_wrapper, sizeof...(Ts), 0, FREE_FUNCTION, Arg_Ts...>();
@@ -38,7 +38,6 @@ class Tagged_Union {
     uint_type tag;
     My_Union<Ts...> m_union;
 
-public: // TODO: make this private again once I figure out why my friend declarations aren't working
     template<typename func_wrapper, uint_type index, typename...Arg_Ts> // TODO rename to execute_member_func...
     auto get_member_func_from_index_internal(Arg_Ts...args) { // TODO make this return auto&, in case function returns reference
         using U = get_type_from_index<index, Ts...>;
@@ -141,7 +140,9 @@ public:
     Tagged_Union() = default;
 };
 
-// Enables usage of a member variable or function called MEMBER_NAME.
+/** Enables usage of a member variable or function called MEMBER_NAME.
+ * It works by defining a struct, so keep that in mind when deciding where to place this.
+ */
 #define TAGGED_UNION_ENABLE_MEMBER(MEMBER_NAME)                      \
                                                                      \
 struct MEMBER_NAME {                                                 \
@@ -149,13 +150,15 @@ struct MEMBER_NAME {                                                 \
         static constexpr auto member = &T::MEMBER_NAME;              \
     };
 
-#define TAGGED_UNION_ENABLE_FREE_FUNCTION(FUNCTION_NAME)                            \
-                                                                                    \
-struct FUNCTION_NAME##_Wrapper_t {                                                  \
+/** Enables usage of a free function called FUNCTION_NAME. However, unlike member functions, free function can't share a name with a class in the same namespace, so the macro defines the class is the namespace Tagged_Union_Free_Functions
+ *
+ */
+#define TAGGED_UNION_ENABLE_FREE_FUNCTION(FUNCTION_NAME)                                \
+namespace Tagged_Union_Free_Functions {                                                 \
+    struct FUNCTION_NAME {                                                              \
         template<typename first_arg_t, typename...rest_arg_ts>                      \
         static auto execute(first_arg_t&& first_arg, rest_arg_ts&&...rest_args) {   \
-            return FUNCTION_NAME(first_arg, rest_args...);                          \
+            return ::FUNCTION_NAME(first_arg, rest_args...);                        \
         }                                                                           \
-};
-
-// keep an eye on the && stuff above
+    };                                                                                  \
+}

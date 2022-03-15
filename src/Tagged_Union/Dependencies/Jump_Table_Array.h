@@ -1,7 +1,7 @@
 #pragma once
 
-#include<cstddef>
-#include<iostream>
+#include <cstddef>
+#include <iostream>
 
 enum Jump_Table_Mode {
     MEMBER_FUNCTION = 1,
@@ -9,7 +9,7 @@ enum Jump_Table_Mode {
     FREE_FUNCTION = 5,
 };
 
-/*This class is for Tagged_Union's jump tables (member functions, member variables, free functions).
+/**This class is for Tagged_Union's jump tables (member functions, member variables, free functions).
  It's defined recursively because it needs to be programmatically initialized at compile time.
  */
 
@@ -49,6 +49,9 @@ protected:
         }();*/
 
     using T = decltype(tagged_union_func<0>); // all functions will have the same type, so any of them will work here
+
+    constexpr Jump_Table_Array_Base() = default;
+
 };
 
 template<typename Tagged_Union_T, typename Func_Wrapper, std::size_t N, std::size_t I, Jump_Table_Mode mode, typename...Arg_Ts>
@@ -59,13 +62,13 @@ class Jump_Table_Array : Jump_Table_Array_Base<Tagged_Union_T, Func_Wrapper, mod
     using T = typename Jump_Table_Array_Base_t ::T;
 
 
-    T head_val;
+    T head_val; // this doesn't compile on clang because it's convinced that T isn't a literal type
     Jump_Table_Array<Tagged_Union_T, Func_Wrapper, N - 1, I + 1, mode, Arg_Ts...> tail_vals;
 
 public:
 
     constexpr T& operator[](std::size_t index) const{
-        return *((&head_val) + index);
+        return *((&head_val) + index); /// I'm like 95% sure this isn't UB
     }
 
     constexpr Jump_Table_Array() : head_val(Jump_Table_Array_Base_t::template tagged_union_func<I>), tail_vals() {}
@@ -76,6 +79,9 @@ class Jump_Table_Array<Tagged_Union_T, Func_Wrapper, 1, I, mode, Arg_Ts...> : Ju
     typename Jump_Table_Array_Base<Tagged_Union_T, Func_Wrapper, mode, Arg_Ts...>::T val;
 
     using Jump_Table_Array_Base_t = Jump_Table_Array_Base<Tagged_Union_T, Func_Wrapper, mode, Arg_Ts...>;
+
+    template<typename...Ts>
+    friend class Tagged_Union;
 
 public:
     constexpr Jump_Table_Array() : val(Jump_Table_Array_Base_t::template tagged_union_func<I>) {}

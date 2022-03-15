@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstddef>
-namespace {
+namespace detail {
     template<std::size_t desired_index, std::size_t current_pos, typename T, typename...Ts>
     auto get_type_from_index_func() { // I think this is correct
         if constexpr(current_pos == 0) {
@@ -17,4 +17,4 @@ namespace {
 }
 
 template<std::size_t desired_index, typename...Ts>
-using get_type_from_index = decltype(get_type_from_index_func<desired_index, 0, Ts...>());
+using get_type_from_index = decltype(detail::get_type_from_index_func<desired_index, 0, Ts...>());

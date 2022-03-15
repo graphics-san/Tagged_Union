@@ -146,13 +146,13 @@ TAGGED_UNION_ENABLE_FREE_FUNCTION(pod_do_thing)
 
 TEST_CASE("execute_free_func returns correct result") {
     pod_tu = 3;
-    REQUIRE(pod_tu.execute_free_func<pod_do_thing_Wrapper_t>("int is") == std::string("int is 3"));
+    REQUIRE(pod_tu.execute_free_func<Tagged_Union_Free_Functions::pod_do_thing>("int is") == std::string("int is 3"));
 
     pod_tu = true;
-    REQUIRE(pod_tu.execute_free_func<pod_do_thing_Wrapper_t>("bool is") == std::string("bool is true"));
+    REQUIRE(pod_tu.execute_free_func<Tagged_Union_Free_Functions::pod_do_thing>("bool is") == std::string("bool is true"));
 
     pod_tu = 'c';
-    REQUIRE(pod_tu.execute_free_func<pod_do_thing_Wrapper_t>("char is") == std::string("char is c"));
+    REQUIRE(pod_tu.execute_free_func<Tagged_Union_Free_Functions::pod_do_thing>("char is") == std::string("char is c"));
 }
 
 TEST_CASE("get returns correct type and value") {

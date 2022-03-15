@@ -8,9 +8,9 @@ This is a templated implementation of a tagged union ([wikipedia](https://en.wik
 ## Concise
 Much less code to achieve the same effect as `std::visit`
 ## Fast
-Beats virtual inheritance and `std::visit` in my tests
+Beats subclass polymorphism and `std::visit` in my tests
 ## Minimal hackery
-Only uses one family of relatively straightforward macros
+Only uses one family of straightforward macros
 
 # Usage
 
@@ -18,21 +18,30 @@ Only uses one family of relatively straightforward macros
 ```cpp
 #include"Tagged_Union/Tagged_Union.h"
 
-struct A {
-    std::string say_hi(unsigned int age) {
-        return std::string("A says hi. ") + "A is " + std::to_string(age) + " years old\n";
+class Foo {
+    int special_number = 1;
+    
+public:
+    std::string get_special_product(unsigned int special_coefficient) {
+        return std::string("Foo says hi. Foo's special number * special coefficient is ") + std::to_string(special_number * special_coefficient) + '\n';
     }
 };
 
-struct B {
-    std::string say_hi(unsigned int age) {
-        return std::string("B says hi. ") + "B is " + std::to_string(age) + " years old\n";
+class Bar {
+        int special_number = 2;
+    
+public:
+    std::string get_special_product(unsigned int special_coefficient) {
+        return std::string("Bar says hi. Bar's special number * special coefficient is ") + std::to_string(special_number * special_coefficient) + '\n';
     }
 };
 
-struct C {
-    std::string say_hi(unsigned int age) {
-        return std::string("C says hi. ") + "C is " + std::to_string(age) + " years old\n";
+class Baz {
+        int special_number = 3;
+    
+public:
+    std::string get_special_product(unsigned int special_coefficient) {
+        return std::string("Baz says hi. Baz's special number * special coefficient is ") + std::to_string(special_number * special_coefficient) + '\n';
     }
 };
 
@@ -40,19 +49,70 @@ TAGGED_UNION_ENABLE_MEMBER(say_hi) // This macro defines a struct with the same 
                                    // which can refer to any public member (variable or function) named say_hi of any class
 
 int main() {
-    Tagged_Union<A, B, C> tu = A{}; // wrapper for function you want to call is the first template argument, args are args
-    std::cout << tu.execute_member_func<say_hi>(3); // prints "A says hi. A is 3 years old"
+    Tagged_Union<Foo, Bar, Baz> tu = Foo{}; // wrapper for function you want to call is the first template argument, args are args
+    std::cout << tu.execute_member_func<get_special_product>(3); // prints "Foo says hi. Foo's special number * special coefficient is 3"
 
-    tu = B{};
-    std::cout << tu.execute_member_func<say_hi>(5); // prints "B says hi. B is 5 years old"
+    tu = Bar{};
+    std::cout << tu.execute_member_func<get_special_product>(5); // prints "Bar says hi. Bar's special number * special coefficient is 10"
 }
-        
-        
+
 ```
+## Public Member Variables
+
+```cpp
+struct Foo {
+    int i = 1;
+}
+
+struct Bar {
+    int i = 3;
+}
+
+struct Baz {
+    int i = 5;
+}
+
+TAGGED_UNION_ENABLE_MEMBER(i) // this macro works for member functions and member variables
+int main() {
+    Tagged_Union<Foo, Bar, Baz> tu(Foo{});
+    
+    std::cout << tu.get_member_var<i>(); // prints 1
+    
+    tu = Bar{};
+    tu.get_member_var_ref<i>() = 9;
+    
+    std::cout << tu.get_member_var<i>(); // prints 9
+}
+```
+
         
 ## Free Functions
-supported, examples coming soon
 
-## Public Member Variables
-supported, examples coming soon
+```cpp
+struct Foo {
+    int i = 1;
+}
+
+struct Bar {
+    int i = 3;
+}
+
+struct Baz {
+    int i = 5;
+}
+
+
+
+TAGGED_UNION_ENABLE_MEMBER(i) // this macro works for member functions and member variables
+int main() {
+    Tagged_Union<Foo, Bar, Baz> tu(Foo{});
+    
+    std::cout << tu.get_member_var<i>(); // prints 1
+    
+    tu = Bar{};
+    tu.get_member_var_ref<i>() = 9;
+    
+    std::cout << tu.get_member_var<i>(); // prints 9
+}
+```
 
