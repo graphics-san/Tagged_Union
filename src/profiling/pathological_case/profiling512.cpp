@@ -15,8 +15,8 @@
 #include "Misc_Utils/Progress_Bar.h"
 #include "Examples/Visitors.h"
 #include "Examples/Free_Functions.h"
-#include "profiling/structs.h"
-#include "profiling/visitors.h"
+#include "profiling/faster_functions/structs.h"
+#include "profiling/faster_functions/visitors.h"
 
 TAGGED_UNION_ENABLE_MEMBER(do_work)
 

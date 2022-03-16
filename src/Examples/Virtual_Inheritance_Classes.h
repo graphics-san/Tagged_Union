@@ -23,12 +23,10 @@
 
 
 struct Virtual_Base_Struct {
-    virtual void do_stuff(const char* says) = 0;
-    virtual void work(int) = 0;
-    virtual void print() = 0;
-    virtual void sleep(int) = 0;
+    virtual int do_work(unsigned int) = 0;
 };
 
+/*
 struct virtual_Foo : Virtual_Base_Struct {
     void print() override {
         std::cout << x;
@@ -132,3 +130,4 @@ struct virtual_Uhh : Virtual_Base_Struct  {
 
     virtual_Uhh(unsigned char x) : x(x) {}
 };
+*/

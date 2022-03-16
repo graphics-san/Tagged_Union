@@ -1,4 +1,4 @@
-#define ARRAY_SIZE 10000u
+#define ARRAY_SIZE 1000u
 #define NUMBER_OF_RUNS 2000u
 
 #include <iostream>
@@ -18,6 +18,7 @@
 #include "profiling/structs.h"
 #include "profiling/visitors.h"
 
+TAGGED_UNION_ENABLE_MEMBER(do_work)
 
 void profiling_5() {
     double if_vec_total = 0, uvec_total = 0, vvec_total = 0, stdvec_total = 0;
@@ -33,7 +34,7 @@ void profiling_5() {
 
     std::mt19937 generator(seed);
 
-    std::uniform_int_distribution<unsigned int> distribute( 1, 5);
+    std::uniform_int_distribution<unsigned int> distribute(0, 5-1);
 
     for(unsigned int run = 0; run < NUMBER_OF_RUNS; ++run) {
         std::cout << "\rRun #: " << run+1 << "/" << NUMBER_OF_RUNS << " ";
@@ -71,7 +72,7 @@ case 4:
 
         auto if_vec_start = high_resolution_clock::now(); //
         for (auto &u: uvec) {
-            u.execute_member_func__if_statement_impl<sleepy_sleep>(1);
+            u.execute_member_func__if_statement_impl<do_work>(1);
 
         }
         auto if_vec_end = high_resolution_clock::now();
@@ -81,7 +82,7 @@ case 4:
         for (auto &u: vvec) {
             //m_union->work(3);
             //m_union->do_stuff("hI");
-            u->sleep(1);
+            u->do_work(1);
 
         }
         auto vvec_end = high_resolution_clock::now();
@@ -91,7 +92,7 @@ case 4:
         for (auto &u: uvec) {
             //m_union.execute_member_func__if_statement_impl<work>(3);
             //m_union.execute_member_func<do_stuff>("HI");
-            u.execute_member_func<sleepy_sleep>(1);
+            u.execute_member_func<do_work>(1);
 
         }
         auto uvec_end = high_resolution_clock::now();
@@ -100,7 +101,7 @@ case 4:
         auto stdvec_start = high_resolution_clock::now();
         for (auto &u: stdvec) {
             //std::visit(print_visitor(), m_union, std::variant<const char *>{"Hi"});
-            std::visit(sleep_visitor(), u, std::variant<int>{1});
+            std::visit(big_work_visitor(), u, std::variant<int>{1});
         }
         auto stdvec_end = high_resolution_clock::now();
 

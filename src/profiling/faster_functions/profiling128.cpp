@@ -15,18 +15,18 @@
 #include "Misc_Utils/Progress_Bar.h"
 #include "Examples/Visitors.h"
 #include "Examples/Free_Functions.h"
-#include "profiling/structs.h"
-#include "profiling/visitors.h"
+#include "profiling/faster_functions/structs.h"
+#include "profiling/faster_functions/visitors.h"
 
 TAGGED_UNION_ENABLE_MEMBER(do_work)
 
-void profiling_64() {
+void profiling_128() {
     double if_vec_total = 0, uvec_total = 0, vvec_total = 0, stdvec_total = 0;
 
-    std::array<Tagged_Union<Struct0, Struct1, Struct2, Struct3, Struct4, Struct5, Struct6, Struct7, Struct8, Struct9, Struct10, Struct11, Struct12, Struct13, Struct14, Struct15, Struct16, Struct17, Struct18, Struct19, Struct20, Struct21, Struct22, Struct23, Struct24, Struct25, Struct26, Struct27, Struct28, Struct29, Struct30, Struct31, Struct32, Struct33, Struct34, Struct35, Struct36, Struct37, Struct38, Struct39, Struct40, Struct41, Struct42, Struct43, Struct44, Struct45, Struct46, Struct47, Struct48, Struct49, Struct50, Struct51, Struct52, Struct53, Struct54, Struct55, Struct56, Struct57, Struct58, Struct59, Struct60, Struct61, Struct62, Struct63>, ARRAY_SIZE> uvec{};
+    std::array<Tagged_Union<Struct0, Struct1, Struct2, Struct3, Struct4, Struct5, Struct6, Struct7, Struct8, Struct9, Struct10, Struct11, Struct12, Struct13, Struct14, Struct15, Struct16, Struct17, Struct18, Struct19, Struct20, Struct21, Struct22, Struct23, Struct24, Struct25, Struct26, Struct27, Struct28, Struct29, Struct30, Struct31, Struct32, Struct33, Struct34, Struct35, Struct36, Struct37, Struct38, Struct39, Struct40, Struct41, Struct42, Struct43, Struct44, Struct45, Struct46, Struct47, Struct48, Struct49, Struct50, Struct51, Struct52, Struct53, Struct54, Struct55, Struct56, Struct57, Struct58, Struct59, Struct60, Struct61, Struct62, Struct63, Struct64, Struct65, Struct66, Struct67, Struct68, Struct69, Struct70, Struct71, Struct72, Struct73, Struct74, Struct75, Struct76, Struct77, Struct78, Struct79, Struct80, Struct81, Struct82, Struct83, Struct84, Struct85, Struct86, Struct87, Struct88, Struct89, Struct90, Struct91, Struct92, Struct93, Struct94, Struct95, Struct96, Struct97, Struct98, Struct99, Struct100, Struct101, Struct102, Struct103, Struct104, Struct105, Struct106, Struct107, Struct108, Struct109, Struct110, Struct111, Struct112, Struct113, Struct114, Struct115, Struct116, Struct117, Struct118, Struct119, Struct120, Struct121, Struct122, Struct123, Struct124, Struct125, Struct126, Struct127>, ARRAY_SIZE> uvec{};
 
     std::array<Virtual_Base_Struct*, ARRAY_SIZE> vvec{};
-    std::array<std::variant<Struct0, Struct1, Struct2, Struct3, Struct4, Struct5, Struct6, Struct7, Struct8, Struct9, Struct10, Struct11, Struct12, Struct13, Struct14, Struct15, Struct16, Struct17, Struct18, Struct19, Struct20, Struct21, Struct22, Struct23, Struct24, Struct25, Struct26, Struct27, Struct28, Struct29, Struct30, Struct31, Struct32, Struct33, Struct34, Struct35, Struct36, Struct37, Struct38, Struct39, Struct40, Struct41, Struct42, Struct43, Struct44, Struct45, Struct46, Struct47, Struct48, Struct49, Struct50, Struct51, Struct52, Struct53, Struct54, Struct55, Struct56, Struct57, Struct58, Struct59, Struct60, Struct61, Struct62, Struct63>, ARRAY_SIZE> stdvec;
+    std::array<std::variant<Struct0, Struct1, Struct2, Struct3, Struct4, Struct5, Struct6, Struct7, Struct8, Struct9, Struct10, Struct11, Struct12, Struct13, Struct14, Struct15, Struct16, Struct17, Struct18, Struct19, Struct20, Struct21, Struct22, Struct23, Struct24, Struct25, Struct26, Struct27, Struct28, Struct29, Struct30, Struct31, Struct32, Struct33, Struct34, Struct35, Struct36, Struct37, Struct38, Struct39, Struct40, Struct41, Struct42, Struct43, Struct44, Struct45, Struct46, Struct47, Struct48, Struct49, Struct50, Struct51, Struct52, Struct53, Struct54, Struct55, Struct56, Struct57, Struct58, Struct59, Struct60, Struct61, Struct62, Struct63, Struct64, Struct65, Struct66, Struct67, Struct68, Struct69, Struct70, Struct71, Struct72, Struct73, Struct74, Struct75, Struct76, Struct77, Struct78, Struct79, Struct80, Struct81, Struct82, Struct83, Struct84, Struct85, Struct86, Struct87, Struct88, Struct89, Struct90, Struct91, Struct92, Struct93, Struct94, Struct95, Struct96, Struct97, Struct98, Struct99, Struct100, Struct101, Struct102, Struct103, Struct104, Struct105, Struct106, Struct107, Struct108, Struct109, Struct110, Struct111, Struct112, Struct113, Struct114, Struct115, Struct116, Struct117, Struct118, Struct119, Struct120, Struct121, Struct122, Struct123, Struct124, Struct125, Struct126, Struct127>, ARRAY_SIZE> stdvec;
 
 
     std::random_device os_seed;
@@ -34,7 +34,7 @@ void profiling_64() {
 
     std::mt19937 generator(seed);
 
-    std::uniform_int_distribution<unsigned int> distribute(0, 64-1);
+    std::uniform_int_distribution<unsigned int> distribute(0, 128-1);
 
     for(unsigned int run = 0; run < NUMBER_OF_RUNS; ++run) {
         std::cout << "\rRun #: " << run+1 << "/" << NUMBER_OF_RUNS << " ";
@@ -299,6 +299,262 @@ case 63:
 	vvec[i] = (new polymorphic_Struct63{1});
 	uvec[i] = (Struct63{1});
 	stdvec[i] = (Struct63{1});
+case 64:
+	vvec[i] = (new polymorphic_Struct64{1});
+	uvec[i] = (Struct64{1});
+	stdvec[i] = (Struct64{1});
+case 65:
+	vvec[i] = (new polymorphic_Struct65{1});
+	uvec[i] = (Struct65{1});
+	stdvec[i] = (Struct65{1});
+case 66:
+	vvec[i] = (new polymorphic_Struct66{1});
+	uvec[i] = (Struct66{1});
+	stdvec[i] = (Struct66{1});
+case 67:
+	vvec[i] = (new polymorphic_Struct67{1});
+	uvec[i] = (Struct67{1});
+	stdvec[i] = (Struct67{1});
+case 68:
+	vvec[i] = (new polymorphic_Struct68{1});
+	uvec[i] = (Struct68{1});
+	stdvec[i] = (Struct68{1});
+case 69:
+	vvec[i] = (new polymorphic_Struct69{1});
+	uvec[i] = (Struct69{1});
+	stdvec[i] = (Struct69{1});
+case 70:
+	vvec[i] = (new polymorphic_Struct70{1});
+	uvec[i] = (Struct70{1});
+	stdvec[i] = (Struct70{1});
+case 71:
+	vvec[i] = (new polymorphic_Struct71{1});
+	uvec[i] = (Struct71{1});
+	stdvec[i] = (Struct71{1});
+case 72:
+	vvec[i] = (new polymorphic_Struct72{1});
+	uvec[i] = (Struct72{1});
+	stdvec[i] = (Struct72{1});
+case 73:
+	vvec[i] = (new polymorphic_Struct73{1});
+	uvec[i] = (Struct73{1});
+	stdvec[i] = (Struct73{1});
+case 74:
+	vvec[i] = (new polymorphic_Struct74{1});
+	uvec[i] = (Struct74{1});
+	stdvec[i] = (Struct74{1});
+case 75:
+	vvec[i] = (new polymorphic_Struct75{1});
+	uvec[i] = (Struct75{1});
+	stdvec[i] = (Struct75{1});
+case 76:
+	vvec[i] = (new polymorphic_Struct76{1});
+	uvec[i] = (Struct76{1});
+	stdvec[i] = (Struct76{1});
+case 77:
+	vvec[i] = (new polymorphic_Struct77{1});
+	uvec[i] = (Struct77{1});
+	stdvec[i] = (Struct77{1});
+case 78:
+	vvec[i] = (new polymorphic_Struct78{1});
+	uvec[i] = (Struct78{1});
+	stdvec[i] = (Struct78{1});
+case 79:
+	vvec[i] = (new polymorphic_Struct79{1});
+	uvec[i] = (Struct79{1});
+	stdvec[i] = (Struct79{1});
+case 80:
+	vvec[i] = (new polymorphic_Struct80{1});
+	uvec[i] = (Struct80{1});
+	stdvec[i] = (Struct80{1});
+case 81:
+	vvec[i] = (new polymorphic_Struct81{1});
+	uvec[i] = (Struct81{1});
+	stdvec[i] = (Struct81{1});
+case 82:
+	vvec[i] = (new polymorphic_Struct82{1});
+	uvec[i] = (Struct82{1});
+	stdvec[i] = (Struct82{1});
+case 83:
+	vvec[i] = (new polymorphic_Struct83{1});
+	uvec[i] = (Struct83{1});
+	stdvec[i] = (Struct83{1});
+case 84:
+	vvec[i] = (new polymorphic_Struct84{1});
+	uvec[i] = (Struct84{1});
+	stdvec[i] = (Struct84{1});
+case 85:
+	vvec[i] = (new polymorphic_Struct85{1});
+	uvec[i] = (Struct85{1});
+	stdvec[i] = (Struct85{1});
+case 86:
+	vvec[i] = (new polymorphic_Struct86{1});
+	uvec[i] = (Struct86{1});
+	stdvec[i] = (Struct86{1});
+case 87:
+	vvec[i] = (new polymorphic_Struct87{1});
+	uvec[i] = (Struct87{1});
+	stdvec[i] = (Struct87{1});
+case 88:
+	vvec[i] = (new polymorphic_Struct88{1});
+	uvec[i] = (Struct88{1});
+	stdvec[i] = (Struct88{1});
+case 89:
+	vvec[i] = (new polymorphic_Struct89{1});
+	uvec[i] = (Struct89{1});
+	stdvec[i] = (Struct89{1});
+case 90:
+	vvec[i] = (new polymorphic_Struct90{1});
+	uvec[i] = (Struct90{1});
+	stdvec[i] = (Struct90{1});
+case 91:
+	vvec[i] = (new polymorphic_Struct91{1});
+	uvec[i] = (Struct91{1});
+	stdvec[i] = (Struct91{1});
+case 92:
+	vvec[i] = (new polymorphic_Struct92{1});
+	uvec[i] = (Struct92{1});
+	stdvec[i] = (Struct92{1});
+case 93:
+	vvec[i] = (new polymorphic_Struct93{1});
+	uvec[i] = (Struct93{1});
+	stdvec[i] = (Struct93{1});
+case 94:
+	vvec[i] = (new polymorphic_Struct94{1});
+	uvec[i] = (Struct94{1});
+	stdvec[i] = (Struct94{1});
+case 95:
+	vvec[i] = (new polymorphic_Struct95{1});
+	uvec[i] = (Struct95{1});
+	stdvec[i] = (Struct95{1});
+case 96:
+	vvec[i] = (new polymorphic_Struct96{1});
+	uvec[i] = (Struct96{1});
+	stdvec[i] = (Struct96{1});
+case 97:
+	vvec[i] = (new polymorphic_Struct97{1});
+	uvec[i] = (Struct97{1});
+	stdvec[i] = (Struct97{1});
+case 98:
+	vvec[i] = (new polymorphic_Struct98{1});
+	uvec[i] = (Struct98{1});
+	stdvec[i] = (Struct98{1});
+case 99:
+	vvec[i] = (new polymorphic_Struct99{1});
+	uvec[i] = (Struct99{1});
+	stdvec[i] = (Struct99{1});
+case 100:
+	vvec[i] = (new polymorphic_Struct100{1});
+	uvec[i] = (Struct100{1});
+	stdvec[i] = (Struct100{1});
+case 101:
+	vvec[i] = (new polymorphic_Struct101{1});
+	uvec[i] = (Struct101{1});
+	stdvec[i] = (Struct101{1});
+case 102:
+	vvec[i] = (new polymorphic_Struct102{1});
+	uvec[i] = (Struct102{1});
+	stdvec[i] = (Struct102{1});
+case 103:
+	vvec[i] = (new polymorphic_Struct103{1});
+	uvec[i] = (Struct103{1});
+	stdvec[i] = (Struct103{1});
+case 104:
+	vvec[i] = (new polymorphic_Struct104{1});
+	uvec[i] = (Struct104{1});
+	stdvec[i] = (Struct104{1});
+case 105:
+	vvec[i] = (new polymorphic_Struct105{1});
+	uvec[i] = (Struct105{1});
+	stdvec[i] = (Struct105{1});
+case 106:
+	vvec[i] = (new polymorphic_Struct106{1});
+	uvec[i] = (Struct106{1});
+	stdvec[i] = (Struct106{1});
+case 107:
+	vvec[i] = (new polymorphic_Struct107{1});
+	uvec[i] = (Struct107{1});
+	stdvec[i] = (Struct107{1});
+case 108:
+	vvec[i] = (new polymorphic_Struct108{1});
+	uvec[i] = (Struct108{1});
+	stdvec[i] = (Struct108{1});
+case 109:
+	vvec[i] = (new polymorphic_Struct109{1});
+	uvec[i] = (Struct109{1});
+	stdvec[i] = (Struct109{1});
+case 110:
+	vvec[i] = (new polymorphic_Struct110{1});
+	uvec[i] = (Struct110{1});
+	stdvec[i] = (Struct110{1});
+case 111:
+	vvec[i] = (new polymorphic_Struct111{1});
+	uvec[i] = (Struct111{1});
+	stdvec[i] = (Struct111{1});
+case 112:
+	vvec[i] = (new polymorphic_Struct112{1});
+	uvec[i] = (Struct112{1});
+	stdvec[i] = (Struct112{1});
+case 113:
+	vvec[i] = (new polymorphic_Struct113{1});
+	uvec[i] = (Struct113{1});
+	stdvec[i] = (Struct113{1});
+case 114:
+	vvec[i] = (new polymorphic_Struct114{1});
+	uvec[i] = (Struct114{1});
+	stdvec[i] = (Struct114{1});
+case 115:
+	vvec[i] = (new polymorphic_Struct115{1});
+	uvec[i] = (Struct115{1});
+	stdvec[i] = (Struct115{1});
+case 116:
+	vvec[i] = (new polymorphic_Struct116{1});
+	uvec[i] = (Struct116{1});
+	stdvec[i] = (Struct116{1});
+case 117:
+	vvec[i] = (new polymorphic_Struct117{1});
+	uvec[i] = (Struct117{1});
+	stdvec[i] = (Struct117{1});
+case 118:
+	vvec[i] = (new polymorphic_Struct118{1});
+	uvec[i] = (Struct118{1});
+	stdvec[i] = (Struct118{1});
+case 119:
+	vvec[i] = (new polymorphic_Struct119{1});
+	uvec[i] = (Struct119{1});
+	stdvec[i] = (Struct119{1});
+case 120:
+	vvec[i] = (new polymorphic_Struct120{1});
+	uvec[i] = (Struct120{1});
+	stdvec[i] = (Struct120{1});
+case 121:
+	vvec[i] = (new polymorphic_Struct121{1});
+	uvec[i] = (Struct121{1});
+	stdvec[i] = (Struct121{1});
+case 122:
+	vvec[i] = (new polymorphic_Struct122{1});
+	uvec[i] = (Struct122{1});
+	stdvec[i] = (Struct122{1});
+case 123:
+	vvec[i] = (new polymorphic_Struct123{1});
+	uvec[i] = (Struct123{1});
+	stdvec[i] = (Struct123{1});
+case 124:
+	vvec[i] = (new polymorphic_Struct124{1});
+	uvec[i] = (Struct124{1});
+	stdvec[i] = (Struct124{1});
+case 125:
+	vvec[i] = (new polymorphic_Struct125{1});
+	uvec[i] = (Struct125{1});
+	stdvec[i] = (Struct125{1});
+case 126:
+	vvec[i] = (new polymorphic_Struct126{1});
+	uvec[i] = (Struct126{1});
+	stdvec[i] = (Struct126{1});
+case 127:
+	vvec[i] = (new polymorphic_Struct127{1});
+	uvec[i] = (Struct127{1});
+	stdvec[i] = (Struct127{1});
 
 
             }

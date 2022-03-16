@@ -15,18 +15,18 @@
 #include "Misc_Utils/Progress_Bar.h"
 #include "Examples/Visitors.h"
 #include "Examples/Free_Functions.h"
-#include "profiling/structs.h"
-#include "profiling/visitors.h"
+#include "profiling/faster_functions/structs.h"
+#include "profiling/faster_functions/visitors.h"
 
 TAGGED_UNION_ENABLE_MEMBER(do_work)
 
-void profiling_16() {
+void profiling_5() {
     double if_vec_total = 0, uvec_total = 0, vvec_total = 0, stdvec_total = 0;
 
-    std::array<Tagged_Union<Struct0, Struct1, Struct2, Struct3, Struct4, Struct5, Struct6, Struct7, Struct8, Struct9, Struct10, Struct11, Struct12, Struct13, Struct14, Struct15>, ARRAY_SIZE> uvec{};
+    std::array<Tagged_Union<Struct0, Struct1, Struct2, Struct3, Struct4>, ARRAY_SIZE> uvec{};
 
     std::array<Virtual_Base_Struct*, ARRAY_SIZE> vvec{};
-    std::array<std::variant<Struct0, Struct1, Struct2, Struct3, Struct4, Struct5, Struct6, Struct7, Struct8, Struct9, Struct10, Struct11, Struct12, Struct13, Struct14, Struct15>, ARRAY_SIZE> stdvec;
+    std::array<std::variant<Struct0, Struct1, Struct2, Struct3, Struct4>, ARRAY_SIZE> stdvec;
 
 
     std::random_device os_seed;
@@ -34,7 +34,7 @@ void profiling_16() {
 
     std::mt19937 generator(seed);
 
-    std::uniform_int_distribution<unsigned int> distribute(0, 16-1);
+    std::uniform_int_distribution<unsigned int> distribute(0, 5-1);
 
     for(unsigned int run = 0; run < NUMBER_OF_RUNS; ++run) {
         std::cout << "\rRun #: " << run+1 << "/" << NUMBER_OF_RUNS << " ";
@@ -63,50 +63,6 @@ case 4:
 	vvec[i] = (new polymorphic_Struct4{1});
 	uvec[i] = (Struct4{1});
 	stdvec[i] = (Struct4{1});
-case 5:
-	vvec[i] = (new polymorphic_Struct5{1});
-	uvec[i] = (Struct5{1});
-	stdvec[i] = (Struct5{1});
-case 6:
-	vvec[i] = (new polymorphic_Struct6{1});
-	uvec[i] = (Struct6{1});
-	stdvec[i] = (Struct6{1});
-case 7:
-	vvec[i] = (new polymorphic_Struct7{1});
-	uvec[i] = (Struct7{1});
-	stdvec[i] = (Struct7{1});
-case 8:
-	vvec[i] = (new polymorphic_Struct8{1});
-	uvec[i] = (Struct8{1});
-	stdvec[i] = (Struct8{1});
-case 9:
-	vvec[i] = (new polymorphic_Struct9{1});
-	uvec[i] = (Struct9{1});
-	stdvec[i] = (Struct9{1});
-case 10:
-	vvec[i] = (new polymorphic_Struct10{1});
-	uvec[i] = (Struct10{1});
-	stdvec[i] = (Struct10{1});
-case 11:
-	vvec[i] = (new polymorphic_Struct11{1});
-	uvec[i] = (Struct11{1});
-	stdvec[i] = (Struct11{1});
-case 12:
-	vvec[i] = (new polymorphic_Struct12{1});
-	uvec[i] = (Struct12{1});
-	stdvec[i] = (Struct12{1});
-case 13:
-	vvec[i] = (new polymorphic_Struct13{1});
-	uvec[i] = (Struct13{1});
-	stdvec[i] = (Struct13{1});
-case 14:
-	vvec[i] = (new polymorphic_Struct14{1});
-	uvec[i] = (Struct14{1});
-	stdvec[i] = (Struct14{1});
-case 15:
-	vvec[i] = (new polymorphic_Struct15{1});
-	uvec[i] = (Struct15{1});
-	stdvec[i] = (Struct15{1});
 
 
             }

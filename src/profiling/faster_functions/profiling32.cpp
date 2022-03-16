@@ -15,18 +15,18 @@
 #include "Misc_Utils/Progress_Bar.h"
 #include "Examples/Visitors.h"
 #include "Examples/Free_Functions.h"
-#include "profiling/structs.h"
-#include "profiling/visitors.h"
+#include "profiling/faster_functions/structs.h"
+#include "profiling/faster_functions/visitors.h"
 
 TAGGED_UNION_ENABLE_MEMBER(do_work)
 
-void profiling_16() {
+void profiling_32() {
     double if_vec_total = 0, uvec_total = 0, vvec_total = 0, stdvec_total = 0;
 
-    std::array<Tagged_Union<Struct0, Struct1, Struct2, Struct3, Struct4, Struct5, Struct6, Struct7, Struct8, Struct9, Struct10, Struct11, Struct12, Struct13, Struct14, Struct15>, ARRAY_SIZE> uvec{};
+    std::array<Tagged_Union<Struct0, Struct1, Struct2, Struct3, Struct4, Struct5, Struct6, Struct7, Struct8, Struct9, Struct10, Struct11, Struct12, Struct13, Struct14, Struct15, Struct16, Struct17, Struct18, Struct19, Struct20, Struct21, Struct22, Struct23, Struct24, Struct25, Struct26, Struct27, Struct28, Struct29, Struct30, Struct31>, ARRAY_SIZE> uvec{};
 
     std::array<Virtual_Base_Struct*, ARRAY_SIZE> vvec{};
-    std::array<std::variant<Struct0, Struct1, Struct2, Struct3, Struct4, Struct5, Struct6, Struct7, Struct8, Struct9, Struct10, Struct11, Struct12, Struct13, Struct14, Struct15>, ARRAY_SIZE> stdvec;
+    std::array<std::variant<Struct0, Struct1, Struct2, Struct3, Struct4, Struct5, Struct6, Struct7, Struct8, Struct9, Struct10, Struct11, Struct12, Struct13, Struct14, Struct15, Struct16, Struct17, Struct18, Struct19, Struct20, Struct21, Struct22, Struct23, Struct24, Struct25, Struct26, Struct27, Struct28, Struct29, Struct30, Struct31>, ARRAY_SIZE> stdvec;
 
 
     std::random_device os_seed;
@@ -34,7 +34,7 @@ void profiling_16() {
 
     std::mt19937 generator(seed);
 
-    std::uniform_int_distribution<unsigned int> distribute(0, 16-1);
+    std::uniform_int_distribution<unsigned int> distribute(0, 32-1);
 
     for(unsigned int run = 0; run < NUMBER_OF_RUNS; ++run) {
         std::cout << "\rRun #: " << run+1 << "/" << NUMBER_OF_RUNS << " ";
@@ -107,6 +107,70 @@ case 15:
 	vvec[i] = (new polymorphic_Struct15{1});
 	uvec[i] = (Struct15{1});
 	stdvec[i] = (Struct15{1});
+case 16:
+	vvec[i] = (new polymorphic_Struct16{1});
+	uvec[i] = (Struct16{1});
+	stdvec[i] = (Struct16{1});
+case 17:
+	vvec[i] = (new polymorphic_Struct17{1});
+	uvec[i] = (Struct17{1});
+	stdvec[i] = (Struct17{1});
+case 18:
+	vvec[i] = (new polymorphic_Struct18{1});
+	uvec[i] = (Struct18{1});
+	stdvec[i] = (Struct18{1});
+case 19:
+	vvec[i] = (new polymorphic_Struct19{1});
+	uvec[i] = (Struct19{1});
+	stdvec[i] = (Struct19{1});
+case 20:
+	vvec[i] = (new polymorphic_Struct20{1});
+	uvec[i] = (Struct20{1});
+	stdvec[i] = (Struct20{1});
+case 21:
+	vvec[i] = (new polymorphic_Struct21{1});
+	uvec[i] = (Struct21{1});
+	stdvec[i] = (Struct21{1});
+case 22:
+	vvec[i] = (new polymorphic_Struct22{1});
+	uvec[i] = (Struct22{1});
+	stdvec[i] = (Struct22{1});
+case 23:
+	vvec[i] = (new polymorphic_Struct23{1});
+	uvec[i] = (Struct23{1});
+	stdvec[i] = (Struct23{1});
+case 24:
+	vvec[i] = (new polymorphic_Struct24{1});
+	uvec[i] = (Struct24{1});
+	stdvec[i] = (Struct24{1});
+case 25:
+	vvec[i] = (new polymorphic_Struct25{1});
+	uvec[i] = (Struct25{1});
+	stdvec[i] = (Struct25{1});
+case 26:
+	vvec[i] = (new polymorphic_Struct26{1});
+	uvec[i] = (Struct26{1});
+	stdvec[i] = (Struct26{1});
+case 27:
+	vvec[i] = (new polymorphic_Struct27{1});
+	uvec[i] = (Struct27{1});
+	stdvec[i] = (Struct27{1});
+case 28:
+	vvec[i] = (new polymorphic_Struct28{1});
+	uvec[i] = (Struct28{1});
+	stdvec[i] = (Struct28{1});
+case 29:
+	vvec[i] = (new polymorphic_Struct29{1});
+	uvec[i] = (Struct29{1});
+	stdvec[i] = (Struct29{1});
+case 30:
+	vvec[i] = (new polymorphic_Struct30{1});
+	uvec[i] = (Struct30{1});
+	stdvec[i] = (Struct30{1});
+case 31:
+	vvec[i] = (new polymorphic_Struct31{1});
+	uvec[i] = (Struct31{1});
+	stdvec[i] = (Struct31{1});
 
 
             }

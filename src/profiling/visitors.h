@@ -1,6 +1,8 @@
+#pragma once
+
 #include "profiling/structs.h"
 
-struct work_visitor {
+struct big_work_visitor {
     inline int operator()(Struct0& arg, unsigned int reps) {
         for (volatile unsigned int i = 0; i < arg.field * reps * 0; i = i + 1) {}
         return reps * 2;
