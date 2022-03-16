@@ -1,5 +1,5 @@
 #pragma once
-#include "profiling/faster_functions/structs.h"
+#include "profiling/pathological_case/structs.h"
 
 struct big_work_visitor {
 inline int operator()(Struct0& arg, unsigned int reps) {

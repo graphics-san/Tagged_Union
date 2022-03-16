@@ -1,0 +1,9 @@
+
+
+----RESULTS-----
+
+virtual inheritance duration: 0.006724 seconds,
+tagged_union duration (jump table): 0.00625 seconds
+tagged_union duration (if statements): 0.004335 seconds
+std::variant duration: 0.006487 seconds
+

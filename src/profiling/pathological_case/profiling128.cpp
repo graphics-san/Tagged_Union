@@ -7,6 +7,7 @@
 #include <array>
 #include <vector>
 #include <random>
+#include <fstream>
 
 #include "Examples/Foo_Bar_Baz.h"
 #include "Tagged_Union/Tagged_Union.h"
@@ -15,8 +16,8 @@
 #include "Misc_Utils/Progress_Bar.h"
 #include "Examples/Visitors.h"
 #include "Examples/Free_Functions.h"
-#include "profiling/faster_functions/structs.h"
-#include "profiling/faster_functions/visitors.h"
+#include "profiling/pathological_case/structs.h"
+#include "profiling/pathological_case/visitors.h"
 
 TAGGED_UNION_ENABLE_MEMBER(do_work)
 
@@ -604,12 +605,21 @@ case 127:
         if_vec_total += (double)(duration_cast<microseconds>(if_vec_end - if_vec_start).count()) / 1000000;
     }
 
+    std::ofstream os("../profiling_results/128_types.txt");
+    
 
     std::cout << "\n\n----RESULTS-----\n\n";
     std::cout << "virtual inheritance duration: " << vvec_total << " seconds,\n";
     std::cout << "tagged_union duration (jump table): " << uvec_total << " seconds\n";
     std::cout << "tagged_union duration (if statements): " << if_vec_total << " seconds\n";
     std::cout << "std::variant duration: " << stdvec_total << " seconds\n\n";
+    
+    os << "\n\n----RESULTS-----\n\n";
+    os << "virtual inheritance duration: " << vvec_total << " seconds,\n";
+    os << "tagged_union duration (jump table): " << uvec_total << " seconds\n";
+    os << "tagged_union duration (if statements): " << if_vec_total << " seconds\n";
+    os << "std::variant duration: " << stdvec_total << " seconds\n\n";
+
 
     std::cout << "press enter to exit";
     std::cin.get();
